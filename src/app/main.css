@@ -1,0 +1,73 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+@layer base {
+    :root {
+        --gold-0: 37 31% 63%;
+        --gold-100: 40 29% 58%;
+        --gold-200: 40 29% 53%;
+        --gold-300: 39 29% 49%;
+        --gold-400: 39 30% 45%;
+        --gold-500: 39 30% 41%;
+        --gold-600: 39 30% 37%;
+        --gold-700: 39 29% 33%;
+        --gold-800: 40 29% 29%;
+        --gold-900: 40 29% 25%;
+        --gold-1000: 38 31% 21%;
+
+        --blue-0: 201 100% 56%;
+        --blue-100: 202 100% 52%;
+        --blue-200: 202 100% 48%;
+        --blue-300: 202 100% 44%;
+        --blue-400: 202 100% 40%;
+        --blue-500: 202 100% 36%;
+        --blue-600: 202 100% 32%;
+        --blue-700: 202 100% 28%;
+        --blue-800: 202 100% 24%;
+        --blue-900: 202 100% 20%;
+        --blue-1000: 203 100% 16%;
+    }
+
+    [data-theme="light"] {
+        --text: 0 0% 0%;
+        --text-50: 0 0% 5%;
+        --text-100: 0 0% 10%;
+        --text-150: 0 0% 15%;
+        --text-200: 0 0% 20%;
+        --text-250: 0 0% 25%;
+        --text-300: 0 0% 30%;
+        
+        --background: 0 0% 100%;
+        --background-50: 0 0% 95%;
+        --background-100: 0 0% 90%;
+        --background-150: 0 0% 85%;
+        --background-200: 0 0% 80%;
+        --background-250: 0 0% 75%;
+        --background-300: 0 0% 70%;
+    }
+
+    [data-theme="dark"] {
+        --text: 0 0% 100%;
+        --text-50: 0 0% 95%;
+        --text-100: 0 0% 90%;
+        --text-150: 0 0% 85%;
+        --text-200: 0 0% 80%;
+        --text-250: 0 0% 75%;
+        --text-300: 0 0% 70%;
+
+        --background: 0 0% 0%;
+        --background-50: 0 0% 5%;
+        --background-100: 0 0% 10%;
+        --background-150: 0 0% 15%;
+        --background-200: 0 0% 20%;
+        --background-250: 0 0% 25%;
+        --background-300: 0 0% 30%;
+    }
+}
