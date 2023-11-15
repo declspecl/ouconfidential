@@ -1,12 +1,14 @@
-import { createClient } from "@/backend/utils";
-import { cookies } from "next/headers";
-import { useRouter } from "next/router";
+"use client";
+
+import { Database } from "@/backend/database.types";
+import { createClientComponentClient } from "@supabase/auth-helpers-nextjs";
+import { useRouter } from "next/navigation";
 
 export default function Login() {
-    async function login(formData: FormData) {
-        "use server";
+    const router = useRouter();
 
-        const supabase = createClient(cookies());
+    async function login(formData: FormData) {
+        const supabase = createClientComponentClient<Database>();
         
         const email = formData.get("email")!.toString();
         const password = formData.get("password")!.toString();
@@ -19,11 +21,10 @@ export default function Login() {
         if (error) {
             console.error(error);
         }
-        else {
-            useRouter().events
-        }
 
         console.log(JSON.stringify(data, null, 2));
+
+        router.refresh();
     }
 
     return (
