@@ -10,6 +10,7 @@ export default function SignOutButton() {
 
     return (
         <button onClick={async () => {
+            console.log("yo");
             const { error } = await supabase.auth.signOut();
 
             if (error) {

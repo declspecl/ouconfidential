@@ -1,6 +1,8 @@
 import { cookies } from "next/headers";
+import { AlertCircleIcon } from "lucide-react";
 import { Database } from "@/backend/database.types";
 import { createServerComponentClient } from "@supabase/auth-helpers-nextjs";
+import { BoardsContainer } from "./BoardsContainer";
 
 export default async function BoardsLoader() {
     const supabase = createServerComponentClient<Database>({ cookies: () => cookies() });
@@ -8,7 +10,15 @@ export default async function BoardsLoader() {
     const { data: { user: user }, error } = await supabase.auth.getUser();
 
     if (error) {
-        return <p>{JSON.stringify(error, null, 2)}</p>
+        console.error(error);
+
+        return (
+            <BoardsContainer>
+                <li>
+                    <AlertCircleIcon />
+                </li>
+            </BoardsContainer>
+        );
     }
     else {
         if (user) {
@@ -25,19 +35,36 @@ export default async function BoardsLoader() {
                     .in("board_id", joinedBoards.map(board => board.board_id));
 
                 if (error) {
-                    return <p>{JSON.stringify(error, null, 2)}</p>
+                    <BoardsContainer>
+                        <li>
+                            <AlertCircleIcon />
+                        </li>
+                    </BoardsContainer>
                 }
                 else {
                     return (
-                        <ul>
-                            {boards.map(board => <li key={board.board_id}>{board.name}</li>)}
-                        </ul>
+                        <BoardsContainer>
+                            {boards.map(board => (
+                                <li
+                                    key={board.board_id}
+                                    className="inline-block w-24 h-24 rounded-full"
+                                >
+                                    <img src={board.picture_url} alt={board.name} />
+                                </li>
+                            ))}
+                        </BoardsContainer>
                     );
                 }
             }
         }
         else {
-            return <p>?</p>
+            return (
+                <BoardsContainer>
+                    <li>
+                        <AlertCircleIcon />
+                    </li>
+                </BoardsContainer>
+            );
         }
     }
 }
