@@ -15,18 +15,21 @@ export interface Database {
           created_at: string
           creator_uuid: string
           name: string
+          picture_url: string
         }
         Insert: {
           board_id?: number
           created_at?: string
           creator_uuid: string
           name: string
+          picture_url: string
         }
         Update: {
           board_id?: number
           created_at?: string
           creator_uuid?: string
           name?: string
+          picture_url?: string
         }
         Relationships: [
           {
