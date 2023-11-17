@@ -9,7 +9,7 @@ export default function SignOutButton() {
     const supabase = createClientComponentClient<Database>();
 
     return (
-        <button onClick={async () => {
+        <button className="text-text" onClick={async () => {
             console.log("yo");
             const { error } = await supabase.auth.signOut();
 

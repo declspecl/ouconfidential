@@ -1,70 +1,70 @@
 import { cookies } from "next/headers";
 import { AlertCircleIcon } from "lucide-react";
 import { Database } from "@/backend/database.types";
+import { AuthError, PostgrestError } from "@supabase/supabase-js";
 import { createServerComponentClient } from "@supabase/auth-helpers-nextjs";
-import { BoardsContainer } from "./BoardsContainer";
+import Link from "next/link";
+import { Suspense } from "react";
+import { Skeleton } from "../Skeleton";
 
-export default async function BoardsLoader() {
+export async function BoardsLoader() {
     const supabase = createServerComponentClient<Database>({ cookies: () => cookies() });
     
-    const { data: { user: user }, error } = await supabase.auth.getUser();
+    const { data: { user: user }, error: authError } = await supabase.auth.getUser();
 
-    if (error) {
-        console.error(error);
+    let errorEncountered: AuthError | PostgrestError | null = null;
+    let boards: Database["public"]["Tables"]["boards"]["Row"][] = [];
 
-        return (
-            <BoardsContainer>
-                <li>
-                    <AlertCircleIcon />
-                </li>
-            </BoardsContainer>
-        );
-    }
-    else {
-        if (user) {
-            const { data: joinedBoards, error } = await supabase.from("boards_users")
+    if (user) {
+        const { data: joinedBoards, error: boardsUsersError } = await supabase.from("boards_users")
+            .select("*")
+            .eq("user_uuid", user.id);
+
+        if (joinedBoards) {
+            const { data: matchingBoards, error: boardsError } = await supabase.from("boards")
                 .select("*")
-                .eq("user_uuid", user.id);
+                .in("board_id", joinedBoards.map(board => board.board_id));
 
-            if (error) {
-                return <p>{JSON.stringify(error, null, 2)}</p>
+            if (boardsError) {
+                console.error(boardsError);
+
+                errorEncountered = boardsError;
             }
             else {
-                const { data: boards, error } = await supabase.from("boards")
-                    .select("*")
-                    .in("board_id", joinedBoards.map(board => board.board_id));
-
-                if (error) {
-                    <BoardsContainer>
-                        <li>
-                            <AlertCircleIcon />
-                        </li>
-                    </BoardsContainer>
-                }
-                else {
-                    return (
-                        <BoardsContainer>
-                            {boards.map(board => (
-                                <li
-                                    key={board.board_id}
-                                    className="inline-block w-24 h-24 rounded-full"
-                                >
-                                    <img src={board.picture_url} alt={board.name} />
-                                </li>
-                            ))}
-                        </BoardsContainer>
-                    );
-                }
+                boards = matchingBoards;
             }
         }
         else {
-            return (
-                <BoardsContainer>
-                    <li>
-                        <AlertCircleIcon />
-                    </li>
-                </BoardsContainer>
-            );
+            console.error(boardsUsersError);
+
+            errorEncountered = boardsUsersError;
         }
     }
+    else {
+        console.log(authError);
+
+        errorEncountered = authError;
+    }
+
+    return (
+        <>
+            {errorEncountered ? (
+                <li className="p-2 w-20 h-20 rounded-full">
+                    <AlertCircleIcon />
+                </li>
+            ) : (
+                <>
+                    {boards.map(board => (
+                        <li className="p-2 w-20 h-20" key={board.name}>
+                            <Link href={`/ou/${board.name}`} className="rounded-full">
+                                <Suspense fallback={<Skeleton className="p-2 w-20 h-20 rounded-full" />}>
+                                    <img className="w-full h-full object-cover rounded-full" src={board.picture_url} alt={board.name} />
+                                </Suspense>
+                            </Link>
+                        </li>
+                    ))}
+                </>
+            )}
+        </>
+    );
 }
