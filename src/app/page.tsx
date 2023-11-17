@@ -5,6 +5,7 @@ import { createServerActionClient } from "@supabase/auth-helpers-nextjs";
 import { Database } from "@/backend/database.types";
 import { NextResponse } from "next/server";
 import { redirect } from "next/navigation";
+import { revalidatePath } from "next/cache";
 
 export default function Home() {
     async function handleCreateBoard(formData: FormData) {
@@ -48,7 +49,7 @@ export default function Home() {
 
                 if (er) console.error(er);
 
-                redirect(`/ou/${newlyCreatedBoard[0].name}`);
+                revalidatePath(`/ou/${newlyCreatedBoard[0].name}`);
             }
         }
     }
