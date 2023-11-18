@@ -7,14 +7,12 @@ export default function Home() {
         <main className="w-full h-full flex flex-row bg-background">
             <Sidebar />
 
-            <div className="flex flex-col gap-2">
+            <div className="mx-60 grow">
                 <SignOutButton />
 
-                <div className="flex flex-col gap-2">
-                    <h1>Create board</h1>
+                <h1 className="text-2xl">Create board</h1>
 
-                    <CreateBoardForm />
-                </div>
+                <CreateBoardForm />
             </div>
         </main>
     );

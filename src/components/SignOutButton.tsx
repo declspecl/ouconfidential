@@ -9,17 +9,15 @@ export default function SignOutButton() {
     const supabase = createClientComponentClient<Database>();
 
     return (
-        <button className="text-text" onClick={async () => {
-            console.log("yo");
+        <button className="px-2 py-1 bg-slate-500 text-white border border-slate-600 rounded-md" onClick={async () => {
             const { error } = await supabase.auth.signOut();
 
-            if (error) {
+            if (error)
                 console.error(error);
-            }
 
             router.refresh();
         }}>
-            sign out
+            Sign out
         </button>
     );
 }

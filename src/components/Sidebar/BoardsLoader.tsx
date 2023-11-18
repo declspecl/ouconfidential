@@ -1,11 +1,9 @@
 import { cookies } from "next/headers";
+import { BoardIcon } from "./BoardIcon";
 import { AlertCircleIcon } from "lucide-react";
 import { Database } from "@/backend/database.types";
 import { AuthError, PostgrestError } from "@supabase/supabase-js";
 import { createServerComponentClient } from "@supabase/auth-helpers-nextjs";
-import Link from "next/link";
-import { Suspense } from "react";
-import { Skeleton } from "../Skeleton";
 
 export async function BoardsLoader() {
     const supabase = createServerComponentClient<Database>({ cookies: () => cookies() });
@@ -49,19 +47,13 @@ export async function BoardsLoader() {
     return (
         <>
             {errorEncountered ? (
-                <li className="p-2 w-20 h-20 rounded-full">
-                    <AlertCircleIcon />
+                <li className="p-2 bg-background-200 rounded-full">
+                    <AlertCircleIcon className="aspect-square rounded-full" />
                 </li>
             ) : (
                 <>
                     {boards.map(board => (
-                        <li className="p-2 w-20 h-20" key={board.name}>
-                            <Link href={`/ou/${board.name}`} className="rounded-full">
-                                <Suspense fallback={<Skeleton className="p-2 w-20 h-20 rounded-full" />}>
-                                    <img className="w-full h-full object-cover rounded-full" src={board.picture_url} alt={board.name} />
-                                </Suspense>
-                            </Link>
-                        </li>
+                        <BoardIcon src={board.picture_url} target={board.name} alt={board.name} key={board.name} />
                     ))}
                 </>
             )}

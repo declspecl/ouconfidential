@@ -85,7 +85,7 @@ export async function createBoard(formData: FormData): Promise<CreateBoardRespon
     // reading newly inserted board
     const { data: createdBoardRow, error: readNewBoardError } = await supabase.from("boards")
         .select("*")
-        .eq("name", formData.get("boardName") as string);
+        .eq("name", boardName);
 
     // reading newly inserted board failed, but board insert succeeded and picture uploaded
     // must delete inserted board row and uploaded picture
