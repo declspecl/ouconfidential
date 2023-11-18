@@ -1,20 +1,48 @@
-import { createClientComponentClient, createServerComponentClient } from "@supabase/auth-helpers-nextjs";
-import { cookies } from "next/headers";
+"use client";
+
+import { useState } from "react";
+import { createBoard } from "@/actions/boards";
+import { createClientComponentClient } from "@supabase/auth-helpers-nextjs";
 
 export function CreateBoardForm() {
-    const supabase = createServerComponentClient({ cookies: () => cookies() });
+    const supabase = createClientComponentClient();
 
-    function createBoard(formData: FormData) {
-        const boardName = formData.get("name")!;
+    const [error, setError] = useState<any>(null);
 
-        const { error } = await supabase.from("boards").insert({ name: boardName });
+    async function createBoardClientAction(formData: FormData) {
+        console.log("yo this is from the client yo");
+
+        try {
+            console.log("trying yo");
+
+            await createBoard(formData);
+
+            console.log("done trying yo");
+        }
+        catch (error) {
+            console.log("error yo");
+
+            console.log(JSON.stringify(error));
+
+            setError(error);
+        }
     }
 
 	return (
-        <form action={createBoard}>
-            <input type="text" name="name" placeholder="board name" />
+        <form className="flex flex-col text-text" action={createBoardClientAction}>
+            <label htmlFor="boardName">Board name</label>
+            <input className="bg-white text-black" type="text" placeholder="general" name="boardName" />
 
-            <button type="submit">Create Board</button>
+            <label htmlFor="profilePicture">Profile picture</label>
+            <input type="file" accept="image/png,image/jpeg" name="boardPicture" />
+
+            <button type="submit">
+                Create
+            </button>
+
+            <p className="text-text">
+                {error ? JSON.stringify(error) : "no error"}
+            </p>
         </form>
     );
 }

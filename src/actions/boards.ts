@@ -53,7 +53,7 @@ export async function createBoard(formData: FormData) {
 
     // picture upload failed
     if (pictureUploadError)
-        throw pictureUploadError;
+        throw new Error(`Failed to upload picture to storage: ${pictureUploadError.message}`);
 
     // adding board row to database
     const { error: boardInsertError } = await supabase.from("boards")
@@ -67,6 +67,9 @@ export async function createBoard(formData: FormData) {
     // must delete uploaded picture
     if (boardInsertError) {
         deleteUploadedPicture(uploadedPictureURL.path)
+            .then(() => {
+                console.log("Successfully deleted uploaded picture after board insert failed.");
+            })
             .catch((error) => {
                 console.error("Failed to delete uploaded picture after board insert failed.");
                 console.error(error);
@@ -84,12 +87,18 @@ export async function createBoard(formData: FormData) {
     // must delete inserted board row and uploaded picture
     if (readNewBoardError) {
         deleteInsertedBoardRow(boardName)
+            .then(() => {
+                console.log("Successfully deleted inserted board row after board insert failed.");
+            })
             .catch((error) => {
                 console.error("Failed to delete inserted board row after board insert failed.");
                 console.error(error);
             });
 
         deleteUploadedPicture(uploadedPictureURL.path)
+            .then(() => {
+                console.log("Successfully deleted uploaded picture after board insert failed.");
+            })
             .catch((error) => {
                 console.error("Failed to delete uploaded picture after board insert failed.");
                 console.error(error);
@@ -109,12 +118,18 @@ export async function createBoard(formData: FormData) {
     // must delete inserted board row and uploaded picture
     if (creatorJoinNewBoardError) {
         deleteInsertedBoardRow(boardName)
+            .then(() => {
+                console.log("Successfully deleted inserted board row after creator join new board failed.");
+            })
             .catch((error) => {
                 console.error("Failed to delete inserted board row after creator join new board failed.");
                 console.error(error);
             });
 
         deleteUploadedPicture(uploadedPictureURL.path)
+            .then(() => {
+                console.log("Successfully deleted uploaded picture after creator join new board failed.");
+            })
             .catch((error) => {
                 console.error("Failed to delete uploaded picture after creator join new board failed.");
                 console.error(error);

@@ -1,6 +1,6 @@
 import Sidebar from "@/components/Sidebar";
-import { createBoard } from "@/actions/boards";
 import SignOutButton from "@/components/SignOutButton";
+import { CreateBoardForm } from "@/components/CreateBoardForm";
 
 export default function Home() {
     return (
@@ -13,14 +13,7 @@ export default function Home() {
                 <div className="flex flex-col gap-2">
                     <h1>Create board</h1>
 
-                    <form className="flex flex-col text-text" action={createBoard}>
-                        <input className="bg-white text-black" type="text" placeholder="Board name" name="boardName" />
-
-                        <label htmlFor="profilePicture">Profile picture</label>
-                        <input type="file" accept="image/png,image/jpeg" name="boardPicture" />
-
-                        <input type="submit" value="Create" />
-                    </form>
+                    <CreateBoardForm />
                 </div>
             </div>
         </main>
