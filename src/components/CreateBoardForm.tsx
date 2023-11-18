@@ -12,19 +12,14 @@ export function CreateBoardForm() {
     async function createBoardClientAction(formData: FormData) {
         console.log("yo this is from the client yo");
 
-        try {
-            console.log("trying yo");
+        const { error } = await createBoard(formData);
 
-            await createBoard(formData);
-
-            console.log("done trying yo");
-        }
-        catch (error) {
-            console.log("error yo");
-
-            console.log(JSON.stringify(error));
-
+        if (error) {
             setError(error);
+        }
+        else {
+            console.log("no error :D");
+            setError(null);
         }
     }
 

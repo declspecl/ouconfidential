@@ -5,7 +5,11 @@ import { revalidatePath } from "next/cache";
 import { Database } from "@/backend/database.types";
 import { createServerActionClient } from "@supabase/auth-helpers-nextjs";
 
-export async function createBoard(formData: FormData) {
+interface CreateBoardResponse {
+    error: string | null
+}
+
+export async function createBoard(formData: FormData): Promise<CreateBoardResponse> {
     // define supabase client
     const supabase = createServerActionClient<Database>({ cookies: () => cookies() });
 
@@ -17,7 +21,7 @@ export async function createBoard(formData: FormData) {
 
         // picture delete failed
         if (pictureDeleteError)
-            throw pictureDeleteError;
+            return { error: pictureDeleteError.message };
     }
 
     async function deleteInsertedBoardRow(name: string) {
@@ -28,7 +32,7 @@ export async function createBoard(formData: FormData) {
 
         // board delete failed
         if (boardDeleteError)
-            throw boardDeleteError;
+            return { error: boardDeleteError.message };
     }
 
     // resume
@@ -37,7 +41,7 @@ export async function createBoard(formData: FormData) {
     if (session.error)
         throw session.error;
     else if (!session.data.session || !session.data.session.user)
-        throw new Error("Session is invalid and/or user is not authenticated.");
+        return { error: "Session is invalid and/or user is not authenticated." };
 
     // session is valid, getting form data
     const boardName: string | null = formData.get("boardName") as string | null;
@@ -45,7 +49,7 @@ export async function createBoard(formData: FormData) {
 
     // checking if form data is missing / invalid
     if (!boardName || !boardPicture || boardName.match(/^[a-z0-9-]+$/) === null)
-        throw new Error("Either the board name and/or picture is missing, or the board name is formatted incorrectly.");
+        return { error: "Either the board name and/or picture is missing, or the board name is formatted incorrectly." };
     
     // uploading picture to storage
     const { data: uploadedPictureURL, error: pictureUploadError} = await supabase.storage.from("board-profile-pictures")
@@ -53,7 +57,7 @@ export async function createBoard(formData: FormData) {
 
     // picture upload failed
     if (pictureUploadError)
-        throw new Error(`Failed to upload picture to storage: ${pictureUploadError.message}`);
+        return { error: `Failed to upload picture to storage: ${pictureUploadError.message}` };
 
     // adding board row to database
     const { error: boardInsertError } = await supabase.from("boards")
@@ -75,7 +79,7 @@ export async function createBoard(formData: FormData) {
                 console.error(error);
             });
 
-        throw boardInsertError;
+        return { error: boardInsertError.message };
     }
 
     // reading newly inserted board
@@ -104,7 +108,7 @@ export async function createBoard(formData: FormData) {
                 console.error(error);
             });
 
-        throw readNewBoardError;
+        return { error: readNewBoardError.message };
     }
 
     // add creator and board pair to junction table to "join" creator to new board
@@ -135,8 +139,10 @@ export async function createBoard(formData: FormData) {
                 console.error(error);
             });
 
-        throw creatorJoinNewBoardError;
+        return { error: creatorJoinNewBoardError.message };
     }
 
     revalidatePath("/");
+
+    return { error: null };
 }
