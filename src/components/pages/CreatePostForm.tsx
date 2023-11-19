@@ -61,7 +61,7 @@ export function CreatePostForm({ boardName, className }: CreatePostFormProps) {
                         placeholder="Hi!"
                         required
                         className={cn(
-                            "px-2 py-1 rounded-md border border-gray-400"
+                            "px-2 py-1 rounded-md border border-gray-400 text-base"
                         )}
                     />
                 </Form.Field>
@@ -81,7 +81,7 @@ export function CreatePostForm({ boardName, className }: CreatePostFormProps) {
                         placeholder="Hi!"
                         required
                         className={cn(
-                            "px-2 py-1 rounded-md border border-gray-400"
+                            "px-2 py-1 rounded-md border border-gray-400 text-base"
                         )}
                     />
                 </Form.Field>

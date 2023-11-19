@@ -6,6 +6,7 @@ import { PostListing } from "@/components/pages/Board/PostListing";
 import { createServerComponentClient } from "@supabase/auth-helpers-nextjs";
 import { BoardInfoHeader } from "@/components/layout/BoardInfoHeader";
 import { SidebarAndMainContentContainer } from "@/components/layout/SidebarAndMainContentContainer";
+import { CreateBoardForm } from "@/components/pages/CreateBoardForm";
 
 export default async function Home() {
     const supabase = createServerComponentClient<Database>({ cookies: () => cookies() });
@@ -35,6 +36,8 @@ export default async function Home() {
 
                     <h3 className="leading-normal text-rose">While you were gone...</h3>
                 </div>
+
+                <CreateBoardForm />
 
                 <div className="flex flex-col gap-12">
                     {joinedBoards?.map((board) => (

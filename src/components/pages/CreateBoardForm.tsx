@@ -43,7 +43,7 @@ export function CreateBoardForm({ className }: CreateBoardFormProps) {
     }
 
 	return (
-        <Form.Root className={cn("min-w-[42rem] flex flex-col gap-2 text-black text-base", className)} action={createBoardClientAction}>
+        <Form.Root className={cn("min-w-[42rem] flex flex-col gap-2 text-text text-base", className)} action={createBoardClientAction}>
             <div className="w-full flex flex-col items-start gap-2">
                 <Form.Field name="boardName" className="w-full flex flex-col">
                     <div className="flex flex-row justify-between gap-16">
@@ -62,7 +62,7 @@ export function CreateBoardForm({ className }: CreateBoardFormProps) {
                         placeholder="general"
                         required
                         className={cn(
-                            "px-2 py-1 rounded-md border border-gray-400"
+                            "px-2 py-1 rounded-md border text-base"
                         )}
                     />
                 </Form.Field>
@@ -83,7 +83,7 @@ export function CreateBoardForm({ className }: CreateBoardFormProps) {
                         required
                         asChild
                     >
-                        <textarea className="px-2 py-1 min-h-[5em] border border-gray-400 text-black resize-y" />
+                        <textarea className="px-2 py-1 min-h-[5em] border border-gray-400 text-base resize-y" />
                     </Form.Control>
                 </Form.Field>
 
