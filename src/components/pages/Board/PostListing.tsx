@@ -11,7 +11,7 @@ export function PostListing({ post }: PostListingProps) {
                 <div className="flex flex-col items-start gap-2">
                     <h1 className="text-4xl">{post.title}</h1>
 
-                    <p className="text-base text-text-300">Created: {new Date(post.created_at).toLocaleString()}</p>
+                    <p className="text-base text-gray-500">Created: {new Date(post.created_at).toLocaleString()}</p>
                 </div>
 
                 <p className="rounded-md text-lg">{post.description}</p>

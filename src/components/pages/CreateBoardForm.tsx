@@ -43,7 +43,7 @@ export function CreateBoardForm({ className }: CreateBoardFormProps) {
     }
 
 	return (
-        <Form.Root className={cn("min-w-[42rem] flex flex-col gap-2 text-text text-base", className)} action={createBoardClientAction}>
+        <Form.Root className={cn("min-w-[42rem] flex flex-col gap-2 text-black text-base", className)} action={createBoardClientAction}>
             <div className="w-full flex flex-col items-start gap-2">
                 <Form.Field name="boardName" className="w-full flex flex-col">
                     <div className="flex flex-row justify-between gap-16">
@@ -52,7 +52,7 @@ export function CreateBoardForm({ className }: CreateBoardFormProps) {
                         <div className="flex flex-col items-center">
                             <Form.Message className="break-words whitespace-normal" match="valueMissing">Please enter the name of the board</Form.Message>
                             <Form.Message className="break-words whitespace-normal" match={(value) => value.length > 20}>Board name must be less than 20 characters</Form.Message>
-                            <Form.Message className="break-words whitespace-normal" match={(value) => value.match(/^[a-z0-9-]+$/) === null}>Board name can only contain lowercase letters, numbers, and dashes</Form.Message>
+                            <Form.Message className="break-words whitespace-normal" match={(value) => value.match(/^[a-z0-9-]+$/) === null}>Board name must only be lowercase letters, numbers, and dashes</Form.Message>
                         </div>
                     </div>
 
@@ -83,7 +83,7 @@ export function CreateBoardForm({ className }: CreateBoardFormProps) {
                         required
                         asChild
                     >
-                        <textarea className="px-2 py-1 min-h-[5em] border border-gray-400 text-text resize-y" />
+                        <textarea className="px-2 py-1 min-h-[5em] border border-gray-400 text-black resize-y" />
                     </Form.Control>
                 </Form.Field>
 
@@ -109,7 +109,7 @@ export function CreateBoardForm({ className }: CreateBoardFormProps) {
                     </>
                 )}
 
-                <Form.Submit disabled={formState === CreateBoardFormState.LOADING} className="px-4 py-1.5 bg-slate-500 text-white text-text border border-slate-600 rounded-md">
+                <Form.Submit disabled={formState === CreateBoardFormState.LOADING} className="px-4 py-1.5 bg-slate-500 text-black border border-slate-600 rounded-md">
                     {formState === CreateBoardFormState.LOADING ? (
                         <Loader2 className="animate-spin" />
                     ) : (

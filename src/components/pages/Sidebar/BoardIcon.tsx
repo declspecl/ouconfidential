@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import * as Avatar from "@radix-ui/react-avatar";
-import { Skeleton } from "../Skeleton";
+import { Skeleton } from "@/components/ui/Skeleton";
 
 interface BoardIconProps {
     src: string,

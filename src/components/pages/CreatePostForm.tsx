@@ -43,7 +43,7 @@ export function CreatePostForm({ boardName, className }: CreatePostFormProps) {
     }
 
 	return (
-        <Form.Root className={cn("min-w-[42rem] flex flex-col gap-2 text-text text-base", className)} action={createPostClientAction}>
+        <Form.Root className={cn("min-w-[42rem] flex flex-col gap-2 text-text", className)} action={createPostClientAction}>
             <div className="w-full flex flex-col items-start gap-2">
                 <Form.Field name="postTitle" className="w-full flex flex-col">
                     <div className="flex flex-row justify-between gap-16">
@@ -100,7 +100,7 @@ export function CreatePostForm({ boardName, className }: CreatePostFormProps) {
                     </>
                 )}
 
-                <Form.Submit disabled={formState === CreatePostFormState.LOADING} className="px-4 py-1.5 bg-slate-500 text-white text-text border border-slate-600 rounded-md">
+                <Form.Submit disabled={formState === CreatePostFormState.LOADING} className="px-4 py-1.5 bg-slate-500 text-white border border-slate-600 rounded-md">
                     {formState === CreatePostFormState.LOADING ? (
                         <Loader2Icon className="stroke-text animate-spin" />
                     ) : (

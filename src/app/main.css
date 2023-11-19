@@ -8,11 +8,6 @@
         padding: 0;
         box-sizing: border-box;
     }
-    
-    body, html {
-        width: 100%;
-        height: 100%;
-    }
 
     ::-webkit-scrollbar {
     	background-color: #ffffff;
@@ -31,65 +26,43 @@
 
 @layer base {
     :root {
-        --gold-0: 37 31% 63%;
-        --gold-100: 40 29% 58%;
-        --gold-200: 40 29% 53%;
-        --gold-300: 39 29% 49%;
-        --gold-400: 39 30% 45%;
-        --gold-500: 39 30% 41%;
-        --gold-600: 39 30% 37%;
-        --gold-700: 39 29% 33%;
-        --gold-800: 40 29% 29%;
-        --gold-900: 40 29% 25%;
-        --gold-1000: 38 31% 21%;
+        --font-scale: 1.333; /* perfect fourth */
 
-        --blue-0: 201 100% 56%;
-        --blue-100: 202 100% 52%;
-        --blue-200: 202 100% 48%;
-        --blue-300: 202 100% 44%;
-        --blue-400: 202 100% 40%;
-        --blue-500: 202 100% 36%;
-        --blue-600: 202 100% 32%;
-        --blue-700: 202 100% 28%;
-        --blue-800: 202 100% 24%;
-        --blue-900: 202 100% 20%;
-        --blue-1000: 203 100% 16%;
+        --p: 1rem;
+        --h5: calc(var(--p) * var(--font-scale));
+        --h4: calc(var(--h5) * var(--font-scale));
+        --h3: calc(var(--h4) * var(--font-scale));
+        --h2: calc(var(--h3) * var(--font-scale));
+        --h1: calc(var(--h2) * var(--font-scale));
+        --small: calc(var(--p) / var(--font-scale));
     }
 
-    :root, [data-theme="light"] {
-        --text: 0 0% 0%;
-        --text-50: 0 0% 5%;
-        --text-100: 0 0% 10%;
-        --text-150: 0 0% 15%;
-        --text-200: 0 0% 20%;
-        --text-250: 0 0% 25%;
-        --text-300: 0 0% 30%;
-        
-        --background: 0 0% 100%;
-        --background-50: 0 0% 95%;
-        --background-100: 0 0% 90%;
-        --background-150: 0 0% 85%;
-        --background-200: 0 0% 80%;
-        --background-250: 0 0% 75%;
-        --background-300: 0 0% 70%;
+    p {
+        font-size: var(--p);
     }
 
-    [data-theme="dark"] {
-        --text: 0 0% 100%;
-        --text-50: 0 0% 95%;
-        --text-100: 0 0% 90%;
-        --text-150: 0 0% 85%;
-        --text-200: 0 0% 80%;
-        --text-250: 0 0% 75%;
-        --text-300: 0 0% 70%;
+    h5 {
+        font-size: var(--h5);
+    }
 
-        --background: 0 0% 0%;
-        --background-50: 0 0% 5%;
-        --background-100: 0 0% 10%;
-        --background-150: 0 0% 15%;
-        --background-200: 0 0% 20%;
-        --background-250: 0 0% 25%;
-        --background-300: 0 0% 30%;
+    h4 {
+        font-size: var(--h4);
+    }
+
+    h3 {
+        font-size: var(--h3);
+    }
+
+    h2 {
+        font-size: var(--h2);
+    }
+
+    h1 {
+        font-size: var(--h1);
+    }
+
+    small {
+        font-size: var(--small);
     }
 }
 
