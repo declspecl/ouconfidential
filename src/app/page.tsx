@@ -5,6 +5,10 @@ import { cookies } from "next/headers";
 import { Database } from "@/backend/database.types";
 import { createServerComponentClient } from "@supabase/auth-helpers-nextjs";
 import { PostListing } from "@/components/pages/Board/PostListing";
+import { SidebarAndMainContentContainer } from "@/components/layout/SidebarAndMainContentContainer";
+import { poppins } from "@/Fonts";
+import { cn } from "@/lib/utils";
+import { BoardImageWithInfo } from "@/components/layout/BoardImageWithInfo";
 
 export default async function Home() {
     const supabase = createServerComponentClient<Database>({ cookies: () => cookies() });
@@ -27,20 +31,23 @@ export default async function Home() {
         console.log(joinedBoards);
 
     return (
-        <main className="w-full h-full flex flex-row">
-            <Sidebar />
+        <SidebarAndMainContentContainer>
+            <div className="flex flex-col gap-4">
+                <div className={cn("flex flex-col gap-2", poppins.className)}>
+                    <h1 className="leading-normal">Welcome back!</h1>
 
-            <div className="mx-60 grow">
-                <SignOutButton />
-
-                <h1 className="text-2xl">Create board</h1>
-
-                <CreateBoardForm />
+                    <h3 className={"leading-normal"}>While you were gone...</h3>
+                </div>
 
                 <ul className="flex flex-col gap-4">
                     {joinedBoards?.map((board) => (
                         <>
-                            <img className="w-24 h-24 object-cover object-center rounded-full" src={board.picture_url} alt={board.name} />
+                            <BoardImageWithInfo
+                                name={board.name}
+                                description={board.description}
+                                pictureURL={board.picture_url}
+                                createdAt={new Date(board.created_at)}
+                            />
 
                             {board.posts.map((post) => (
                                 <PostListing post={post} key={post.title} />
@@ -49,6 +56,6 @@ export default async function Home() {
                     ))}
                 </ul>
             </div>
-        </main>
+        </SidebarAndMainContentContainer>
     );
 }
