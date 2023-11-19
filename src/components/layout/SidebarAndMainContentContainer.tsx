@@ -12,7 +12,7 @@ export function SidebarAndMainContentContainer({ className, children }: SidebarA
             <Sidebar />
 
             <div className="w-full h-full grow flex flex-row justify-center overflow-y-auto">
-                <div className="mx-auto my-4 p-6 w-7/12 bg-surface border-opacity-20 rounded-xl overflow-y-auto">
+                <div className="mx-auto my-4 p-6 w-7/12 bg-surface border border-muted border-opacity-20 rounded-xl overflow-y-auto">
                     {children}
                 </div>
             </div>

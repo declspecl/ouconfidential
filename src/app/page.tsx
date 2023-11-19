@@ -1,14 +1,11 @@
-import { Sidebar } from "@/components/pages/Sidebar";
-import { SignOutButton } from "@/components/pages/SignOutButton";
-import { CreateBoardForm } from "@/components/pages/CreateBoardForm";
+import { cn } from "@/lib/utils";
+import { poppins } from "@/Fonts";
 import { cookies } from "next/headers";
 import { Database } from "@/backend/database.types";
-import { createServerComponentClient } from "@supabase/auth-helpers-nextjs";
 import { PostListing } from "@/components/pages/Board/PostListing";
+import { createServerComponentClient } from "@supabase/auth-helpers-nextjs";
+import { BoardInfoHeader } from "@/components/layout/BoardInfoHeader";
 import { SidebarAndMainContentContainer } from "@/components/layout/SidebarAndMainContentContainer";
-import { poppins } from "@/Fonts";
-import { cn } from "@/lib/utils";
-import { BoardImageWithInfo } from "@/components/layout/BoardImageWithInfo";
 
 export default async function Home() {
     const supabase = createServerComponentClient<Database>({ cookies: () => cookies() });
@@ -22,8 +19,8 @@ export default async function Home() {
 
     const { data: joinedBoards, error: getJoinedBoardsError } = await supabase.from("boards")
         .select("*, posts(*)")
-        .limit(3, { foreignTable: "posts" })
-        .order("created_at", { ascending: false });
+        .order("created_at", { ascending: false, foreignTable: "posts" })
+        .limit(3, { foreignTable: "posts" });
 
     if (getJoinedBoardsError)
         console.error(getJoinedBoardsError);
@@ -32,29 +29,31 @@ export default async function Home() {
 
     return (
         <SidebarAndMainContentContainer>
-            <div className="flex flex-col gap-4">
+            <div className="flex flex-col gap-12">
                 <div className={cn("flex flex-col gap-2", poppins.className)}>
-                    <h1 className="leading-normal">Welcome back!</h1>
+                    <h1 className="leading-normal text-gold">Welcome back!</h1>
 
-                    <h3 className={"leading-normal"}>While you were gone...</h3>
+                    <h3 className="leading-normal text-rose">While you were gone...</h3>
                 </div>
 
-                <ul className="flex flex-col gap-4">
+                <div className="flex flex-col gap-12">
                     {joinedBoards?.map((board) => (
-                        <>
-                            <BoardImageWithInfo
+                        <div key={board.name} className="flex flex-col gap-6">
+                            <BoardInfoHeader
                                 name={board.name}
                                 description={board.description}
                                 pictureURL={board.picture_url}
                                 createdAt={new Date(board.created_at)}
                             />
-
-                            {board.posts.map((post) => (
-                                <PostListing post={post} key={post.title} />
-                            ))}
-                        </>
+                            
+                            <ul className="flex flex-col gap-4">
+                                {board.posts.map((post) => (
+                                    <PostListing post={post} key={post.title} />
+                                ))}
+                            </ul>
+                        </div>
                     ))}
-                </ul>
+                </div>
             </div>
         </SidebarAndMainContentContainer>
     );

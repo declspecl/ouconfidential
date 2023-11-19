@@ -5,6 +5,7 @@ import { CreatePostForm } from "@/components/pages/CreatePostForm";
 import { createServerComponentClient } from "@supabase/auth-helpers-nextjs";
 import { Sidebar } from "@/components/pages/Sidebar";
 import { SidebarAndMainContentContainer } from "@/components/layout/SidebarAndMainContentContainer";
+import { BoardInfoHeader } from "@/components/layout/BoardInfoHeader";
 
 interface BoardProps {
     params: {
@@ -31,23 +32,18 @@ export default async function Board({ params }: BoardProps) {
             .order("created_at", { ascending: false });
 
         // QoL destructuring
-        const { name: boardName, created_at: createdAt, picture_url: pictureURL } = nameMatchBoard[0];
+        const { name, description, created_at, picture_url } = nameMatchBoard[0];
 
         if (!getPostsError) {
             return (
                 <SidebarAndMainContentContainer>
                     <div className="flex flex-col gap-2">
-                        <div className="flex flex-row items-center gap-2">
-                            <img className="w-32 h-32 object-cover object-center border border-gray-400 rounded-full" src={pictureURL} alt={boardName} />
-
-                            <div className="flex flex-col items-start gap-3 translate-y-[12.5%]">
-                                <h1 className="text-4xl font-medium">{boardName}</h1>
-
-                                <p className="text-base text-gray-500">Created: {new Date(createdAt).toLocaleString()}</p>
-                            </div>
-                        </div>
-
-                        <p className="text-lg text-black">{nameMatchBoard[0].description}</p>
+                        <BoardInfoHeader
+                            name={name}
+                            description={description}
+                            pictureURL={picture_url}
+                            createdAt={new Date(created_at)}
+                        />
                     </div>
 
                     <div className="pt-8 flex flex-col gap-4">
@@ -56,7 +52,7 @@ export default async function Board({ params }: BoardProps) {
                         <BoardPosts posts={posts} />
                     </div>
 
-                    <CreatePostForm boardName={nameMatchBoard[0].name} />
+                    <CreatePostForm boardName={name} />
                 </SidebarAndMainContentContainer>
             );
         }

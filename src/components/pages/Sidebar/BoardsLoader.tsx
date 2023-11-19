@@ -1,5 +1,5 @@
 import { cookies } from "next/headers";
-import { BoardIcon } from "./BoardIcon";
+import { BoardPicture } from "./BoardPicture";
 import { AlertCircleIcon } from "lucide-react";
 import { Database } from "@/backend/database.types";
 import { AuthError, PostgrestError } from "@supabase/supabase-js";
@@ -53,7 +53,12 @@ export async function BoardsLoader() {
             ) : (
                 <>
                     {boards.map(board => (
-                        <BoardIcon src={board.picture_url} target={board.name} alt={board.name} key={board.name} />
+                        <BoardPicture
+                            key={board.name}
+                            name={board.name}
+                            src={board.picture_url}
+                            target={board.name}
+                        />
                     ))}
                 </>
             )}

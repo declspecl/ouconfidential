@@ -36,12 +36,10 @@ export async function createBoard(formData: FormData): Promise<CreateBoardRespon
     }
 
     // resume
-    const session = await supabase.auth.getSession();
+    const { data: { user: user }, error } = await supabase.auth.getUser();
 
-    if (session.error)
-        return { error: "An error occured when trying to retrieve the current session." };
-    else if (!session.data.session || !session.data.session.user)
-        return { error: "Session is invalid and/or user is not authenticated." };
+    if (error || !user)
+        return { error: "An error occured when trying to retrieve the current user." }
 
     // session is valid, getting form data
     const boardName: string | null = formData.get("boardName") as string | null;
@@ -66,7 +64,7 @@ export async function createBoard(formData: FormData): Promise<CreateBoardRespon
             name: boardName,
             description: boardDescription,
             picture_url: supabase.storage.from("board-profile-pictures").getPublicUrl(uploadedPictureURL.path).data.publicUrl,
-            creator_uuid: session.data.session.user.id
+            creator_uuid: user.id
         });
 
     // picture successfully uploaded, but board insert failed
@@ -117,7 +115,7 @@ export async function createBoard(formData: FormData): Promise<CreateBoardRespon
     const { error: creatorJoinNewBoardError } = await supabase.from("boards_users")
         .insert({
             board_id: createdBoardRow[0].board_id,
-            user_uuid: session.data.session.user.id
+            user_uuid: user.id
         });
 
     // creator join new board failed, but board insert and picture upload succeeded

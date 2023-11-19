@@ -47,7 +47,7 @@ export function CreatePostForm({ boardName, className }: CreatePostFormProps) {
             <div className="w-full flex flex-col items-start gap-2">
                 <Form.Field name="postTitle" className="w-full flex flex-col">
                     <div className="flex flex-row justify-between gap-16">
-                        <Form.Label className="text-lg">Post title <span className="text-red-500">*</span></Form.Label>
+                        <Form.Label className="text-lg">Post title <span className="text-rose">*</span></Form.Label>
 
                         <div className="flex flex-col items-center">
                             <Form.Message className="break-words whitespace-normal" match="valueMissing">Please enter the post&apos;s title</Form.Message>
@@ -68,7 +68,7 @@ export function CreatePostForm({ boardName, className }: CreatePostFormProps) {
 
                 <Form.Field name="postDescription" className="w-full flex flex-col">
                     <div className="flex flex-row justify-between gap-16">
-                        <Form.Label className="text-lg">Post description <span className="text-red-500">*</span></Form.Label>
+                        <Form.Label className="text-lg">Post description <span className="text-rose">*</span></Form.Label>
 
                         <div className="flex flex-col items-center">
                             <Form.Message className="break-words whitespace-normal" match="valueMissing">Please enter the post&apos;s description</Form.Message>

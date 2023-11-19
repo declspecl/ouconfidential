@@ -47,7 +47,7 @@ export function CreateBoardForm({ className }: CreateBoardFormProps) {
             <div className="w-full flex flex-col items-start gap-2">
                 <Form.Field name="boardName" className="w-full flex flex-col">
                     <div className="flex flex-row justify-between gap-16">
-                        <Form.Label className="text-lg">Board name <span className="text-red-500">*</span></Form.Label>
+                        <Form.Label className="text-lg">Board name <span className="text-rose">*</span></Form.Label>
 
                         <div className="flex flex-col items-center">
                             <Form.Message className="break-words whitespace-normal" match="valueMissing">Please enter the name of the board</Form.Message>
@@ -69,7 +69,7 @@ export function CreateBoardForm({ className }: CreateBoardFormProps) {
 
                 <Form.Field name="boardDescription" className="w-full flex flex-col">
                     <div className="flex flex-row justify-between gap-16">
-                        <Form.Label className="text-lg">Board description <span className="text-red-500">*</span></Form.Label>
+                        <Form.Label className="text-lg">Board description <span className="text-rose">*</span></Form.Label>
 
                         <div className="flex flex-col items-center">
                             <Form.Message className="break-words whitespace-normal" match="valueMissing">Please enter the board&apos; description</Form.Message>
@@ -89,7 +89,7 @@ export function CreateBoardForm({ className }: CreateBoardFormProps) {
 
                 <Form.Field name="boardPicture" className="w-full">
                     <div className="w-full flex flex-row justify-between gap-16">
-                        <Form.Label className="text-lg">Board picture <span className="text-red-500">*</span></Form.Label>
+                        <Form.Label className="text-lg">Board picture <span className="text-rose">*</span></Form.Label>
 
                         <Form.Message match="valueMissing">Please add a picture for the board</Form.Message>
                     </div>

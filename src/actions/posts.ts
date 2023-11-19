@@ -13,12 +13,11 @@ export async function createPost(formData: FormData): Promise<CreatePostResponse
     // define supabase client
     const supabase = createServerActionClient<Database>({ cookies: () => cookies() });
 
-    const session = await supabase.auth.getSession();
+    // get user
+    const { data: { user: user }, error } = await supabase.auth.getUser();
 
-    if (session.error)
-        return { error: "An error occured when trying to retrieve the current session." };
-    else if (!session.data.session || !session.data.session.user)
-        return { error: "Session is invalid and/or user is not authenticated." };
+    if (error || !user)
+        return { error: "An error occured when trying to retrieve the current user." }
 
     // session is valid, getting form data
     const postTitle: string | null = formData.get("postTitle") as string | null;
@@ -45,7 +44,7 @@ export async function createPost(formData: FormData): Promise<CreatePostResponse
             title: postTitle,
             description: postDescription,
             parent_board: parentBoardRow[0].board_id,
-            creator_uuid: session.data.session.user.id
+            creator_uuid: user.id
         });
 
     if (insertPostError)
