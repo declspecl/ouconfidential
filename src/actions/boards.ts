@@ -39,17 +39,18 @@ export async function createBoard(formData: FormData): Promise<CreateBoardRespon
     const session = await supabase.auth.getSession();
 
     if (session.error)
-        throw session.error;
+        return { error: "An error occured when trying to retrieve the current session." };
     else if (!session.data.session || !session.data.session.user)
         return { error: "Session is invalid and/or user is not authenticated." };
 
     // session is valid, getting form data
     const boardName: string | null = formData.get("boardName") as string | null;
+    const boardDescription: string | null = formData.get("boardDescription") as string | null;
     const boardPicture: File | null = formData.get("boardPicture") as File | null;
 
     // checking if form data is missing / invalid
-    if (!boardName || !boardPicture || boardName.match(/^[a-z0-9-]+$/) === null)
-        return { error: "Either the board name and/or picture is missing, or the board name is formatted incorrectly." };
+    if (!boardName || !boardDescription || !boardPicture || boardName.match(/^[a-z0-9-]+$/) === null)
+        return { error: "Either the board name, description, or picture is missing, or the board name is formatted incorrectly." };
     
     // uploading picture to storage
     const { data: uploadedPictureURL, error: pictureUploadError} = await supabase.storage.from("board-profile-pictures")
@@ -63,6 +64,7 @@ export async function createBoard(formData: FormData): Promise<CreateBoardRespon
     const { error: boardInsertError } = await supabase.from("boards")
         .insert({
             name: boardName,
+            description: boardDescription,
             picture_url: supabase.storage.from("board-profile-pictures").getPublicUrl(uploadedPictureURL.path).data.publicUrl,
             creator_uuid: session.data.session.user.id
         });

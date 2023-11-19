@@ -51,6 +51,7 @@ export function CreatePostForm({ boardName, className }: CreatePostFormProps) {
 
                         <div className="flex flex-col items-center">
                             <Form.Message className="break-words whitespace-normal" match="valueMissing">Please enter the post&apos;s title</Form.Message>
+                            <Form.Message className="break-words whitespace-normal" match={(value) => value.length > 60}>Please enter a title 60 characters or less</Form.Message>
                         </div>
                     </div>
 

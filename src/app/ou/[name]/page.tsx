@@ -1,9 +1,9 @@
+import { cookies } from "next/headers";
+import Sidebar from "@/components/Sidebar";
 import { Database } from "@/backend/database.types";
 import { BoardPosts } from "@/components/Board/BoardPosts";
 import { CreatePostForm } from "@/components/CreatePostForm";
-import Sidebar from "@/components/Sidebar";
 import { createServerComponentClient } from "@supabase/auth-helpers-nextjs";
-import { cookies } from "next/headers";
 
 interface BoardProps {
     params: {
@@ -13,41 +13,59 @@ interface BoardProps {
 
 export default async function Board({ params }: BoardProps) {
     const supabase = createServerComponentClient<Database>({ cookies: () => cookies() });
-    const { data: nameMatchBoard, error } = await supabase.from("boards").select("*").eq("name", params.name);
 
-    if (error) {
-        return <p>{JSON.stringify(error, null, 2)}</p>
+    const { data: nameMatchBoard, error: getBoardError } = await supabase.from("boards")
+        .select("*")
+        .eq("name", params.name);
+
+    if (getBoardError) {
+        return <p>A fatal error occured: {getBoardError.message}</p>
     }
 
     if (nameMatchBoard.length === 1) {
-        const { data: posts, error } = await supabase.from("posts").select("*").eq("parent_board", nameMatchBoard[0].board_id);
+        // getting posts in this board
+        const { data: posts, error: getPostsError } = await supabase.from("posts")
+            .select("*")
+            .eq("parent_board", nameMatchBoard[0].board_id)
+            .order("created_at", { ascending: false });
 
-        if (error) {
-            console.error(error);
+        // QoL destructuring
+        const { name: boardName, created_at: createdAt, picture_url: pictureURL } = nameMatchBoard[0];
 
-            return (
-                <p>{JSON.stringify(error, null, 2)}</p>
-            );
-        }
-        else {
+        if (!getPostsError) {
             return (
                 <div className="w-full h-full flex flex-row">
                     <Sidebar />
 
-                    <div className="mx-60 grow">
-                        <h1 className="text-4xl">{nameMatchBoard[0].name}</h1>
-                        <p>Created at: {new Date(nameMatchBoard[0].created_at).toString()}</p>
+                    <div className="py-5 grow flex flex-row justify-center bg-background-200">
+                        <div className="px-6 py-4 w-[80rem] mx-auto bg-background rounded-lg overflow-y-scroll border-2 border-background-250">
+                            <div className="flex flex-col gap-2">
+                                <div className="flex flex-row items-center gap-2">
+                                    <img className="w-32 h-32 object-cover object-center border border-gray-400 rounded-full" src={pictureURL} alt={boardName} />
 
-                        <img className="w-[300px] h-[300px]" src={nameMatchBoard[0].picture_url} alt={nameMatchBoard[0].name} />
+                                    <div className="flex flex-col items-start gap-3 translate-y-[12.5%]">
+                                        <h1 className="text-4xl font-medium">{boardName}</h1>
 
-                        <h2 className="text-3xl">Posts</h2>
-                        <CreatePostForm boardName={nameMatchBoard[0].name} />
-                        <BoardPosts posts={posts} />
+                                        <p className="text-base text-text-300">Created: {new Date(createdAt).toLocaleString()}</p>
+                                    </div>
+                                </div>
+
+                                <p className="text-lg text-text">{nameMatchBoard[0].description}</p>
+                            </div>
+
+                            <div className="pt-8 flex flex-col gap-4">
+                                <h2 className="text-4xl font-medium">Posts</h2>
+
+                                <BoardPosts posts={posts} />
+                            </div>
+
+                            <CreatePostForm boardName={nameMatchBoard[0].name} />
+                        </div>
                     </div>
                 </div>
             );
         }
+        else return <p>A fatal error occured: {getPostsError.message}</p>;
     }
-    else
-        return <p>Invalid board.</p>;
+    else return <p>Invalid board.</p>;
 }

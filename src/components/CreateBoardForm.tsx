@@ -18,6 +18,7 @@ interface CreateBoardFormProps {
 
 export function CreateBoardForm({ className }: CreateBoardFormProps) {
     const boardNameRef = useRef<HTMLInputElement>(null!);
+    const boardDescriptionRef = useRef<HTMLInputElement>(null!);
     const boardPictureRef = useRef<HTMLInputElement>(null!);
 
     const [formState, setFormState] = useOptimistic<CreateBoardFormState>(CreateBoardFormState.IDLE);
@@ -64,6 +65,26 @@ export function CreateBoardForm({ className }: CreateBoardFormProps) {
                             "px-2 py-1 rounded-md border border-gray-400"
                         )}
                     />
+                </Form.Field>
+
+                <Form.Field name="boardDescription" className="w-full flex flex-col">
+                    <div className="flex flex-row justify-between gap-16">
+                        <Form.Label className="text-lg">Board description <span className="text-red-500">*</span></Form.Label>
+
+                        <div className="flex flex-col items-center">
+                            <Form.Message className="break-words whitespace-normal" match="valueMissing">Please enter the board&apos; description</Form.Message>
+                        </div>
+                    </div>
+
+                    <Form.Control
+                        type="text"
+                        ref={boardDescriptionRef}
+                        placeholder="What is your board about? What will you be talking about here?"
+                        required
+                        asChild
+                    >
+                        <textarea className="px-2 py-1 min-h-[5em] border border-gray-400 text-text resize-y" />
+                    </Form.Control>
                 </Form.Field>
 
                 <Form.Field name="boardPicture" className="w-full">

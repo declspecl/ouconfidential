@@ -16,7 +16,7 @@ export async function createPost(formData: FormData): Promise<CreatePostResponse
     const session = await supabase.auth.getSession();
 
     if (session.error)
-        throw session.error;
+        return { error: "An error occured when trying to retrieve the current session." };
     else if (!session.data.session || !session.data.session.user)
         return { error: "Session is invalid and/or user is not authenticated." };
 

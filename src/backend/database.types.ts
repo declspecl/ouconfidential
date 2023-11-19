@@ -15,6 +15,7 @@ export interface Database {
                     created_at: string
                     creator_uuid: string
                     name: string
+                    description: string
                     picture_url: string
                 }
                 Insert: {
@@ -22,6 +23,7 @@ export interface Database {
                     created_at?: string
                     creator_uuid: string
                     name: string
+                    description: string
                     picture_url: string
                 }
                 Update: {
@@ -29,6 +31,7 @@ export interface Database {
                     created_at?: string
                     creator_uuid?: string
                     name?: string
+                    description?: string
                     picture_url?: string
                 }
                 Relationships: [
