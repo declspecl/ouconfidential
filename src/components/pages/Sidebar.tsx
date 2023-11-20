@@ -1,6 +1,8 @@
 import Link from "next/link";
 import { GlobeIcon, HomeIcon, SettingsIcon } from "lucide-react";
 import { BoardsLoader } from "./Sidebar/BoardsLoader";
+import { Separator } from "@/components/ui/Separator";
+import { Tooltip } from "../ui/Tooltip";
 
 function ManualSidebarEntry({ children }: { children: React.ReactNode }) {
     return (
@@ -13,26 +15,24 @@ function ManualSidebarEntry({ children }: { children: React.ReactNode }) {
 export function Sidebar() {
     return (
         <div className="w-20 h-full scrollable-hidden bg-surface">
-            <ul className="p-2 w-full h-full flex flex-col gap-4 items-center">
-                <ManualSidebarEntry>
-                    <Link href="/">
-                        <HomeIcon className="w-full h-full stroke-text" />
-                    </Link>
-                </ManualSidebarEntry>
+            <ul className="p-2 w-full h-full flex flex-col gap-3 items-center">
+                <Tooltip content="Home" side="right">
+                    <ManualSidebarEntry>
+                        <Link href="/">
+                            <HomeIcon className="w-full h-full stroke-text" />
+                        </Link>
+                    </ManualSidebarEntry>
+                </Tooltip>
 
-                {/*
-                <ManualSidebarEntry>
-                    <Link href="/">
-                        <SettingsIcon className="w-full h-full stroke-text" />
-                    </Link>
-                </ManualSidebarEntry>
-                */}
+                <Tooltip content="Boards" side="right">
+                    <ManualSidebarEntry>
+                        <Link href="/ou">
+                            <GlobeIcon className="w-full h-full stroke-text" />
+                        </Link>
+                    </ManualSidebarEntry>
+                </Tooltip>
 
-                <ManualSidebarEntry>
-                    <Link href="/ou">
-                        <GlobeIcon className="w-full h-full stroke-text" />
-                    </Link>
-                </ManualSidebarEntry>
+                <Separator orientation="horizontal" className="mw-auto w-[85%] h-[2px] bg-subtle rounded-full" />
 
                 <BoardsLoader />
             </ul>

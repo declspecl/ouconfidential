@@ -2,10 +2,8 @@ import { cookies } from "next/headers";
 import { Database } from "@/backend/database.types";
 import { BoardPosts } from "@/components/pages/Board/BoardPosts";
 import { CreatePostForm } from "@/components/pages/CreatePostForm";
-import { createServerComponentClient } from "@supabase/auth-helpers-nextjs";
-import { Sidebar } from "@/components/pages/Sidebar";
-import { SidebarAndMainContentContainer } from "@/components/layout/SidebarAndMainContentContainer";
 import { BoardInfoHeader } from "@/components/layout/BoardInfoHeader";
+import { createServerComponentClient } from "@supabase/auth-helpers-nextjs";
 
 interface BoardProps {
     params: {
@@ -36,7 +34,7 @@ export default async function Board({ params }: BoardProps) {
 
         if (!getPostsError) {
             return (
-                <SidebarAndMainContentContainer>
+                <div>
                     <div className="flex flex-col gap-2">
                         <BoardInfoHeader
                             name={name}
@@ -53,7 +51,7 @@ export default async function Board({ params }: BoardProps) {
                     </div>
 
                     <CreatePostForm boardName={name} />
-                </SidebarAndMainContentContainer>
+                </div>
             );
         }
         else return <p>A fatal error occured: {getPostsError.message}</p>;

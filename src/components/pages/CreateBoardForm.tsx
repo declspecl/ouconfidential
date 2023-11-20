@@ -35,6 +35,7 @@ export function CreateBoardForm({ className }: CreateBoardFormProps) {
 
             if (!error) {
                 boardNameRef.current.value = "";
+                boardDescriptionRef.current.value = "";
                 boardPictureRef.current.value = "";
             }
 
@@ -43,18 +44,10 @@ export function CreateBoardForm({ className }: CreateBoardFormProps) {
     }
 
 	return (
-        <Form.Root className={cn("min-w-[42rem] flex flex-col gap-2 text-text text-base", className)} action={createBoardClientAction}>
-            <div className="w-full flex flex-col items-start gap-2">
-                <Form.Field name="boardName" className="w-full flex flex-col">
-                    <div className="flex flex-row justify-between gap-16">
-                        <Form.Label className="text-lg">Board name <span className="text-rose">*</span></Form.Label>
-
-                        <div className="flex flex-col items-center">
-                            <Form.Message className="break-words whitespace-normal" match="valueMissing">Please enter the name of the board</Form.Message>
-                            <Form.Message className="break-words whitespace-normal" match={(value) => value.length > 20}>Board name must be less than 20 characters</Form.Message>
-                            <Form.Message className="break-words whitespace-normal" match={(value) => value.match(/^[a-z0-9-]+$/) === null}>Board name must only be lowercase letters, numbers, and dashes</Form.Message>
-                        </div>
-                    </div>
+        <Form.Root className={cn("w-full flex flex-col gap-2 text-text text-base", className)} action={createBoardClientAction}>
+            <div className="w-full flex flex-col items-start gap-3">
+                <Form.Field name="boardName" className="w-full flex flex-col gap-1">
+                    <Form.Label className="text-lg">Board name <span className="text-love">*</span></Form.Label>
 
                     <Form.Control
                         type="text"
@@ -62,19 +55,20 @@ export function CreateBoardForm({ className }: CreateBoardFormProps) {
                         placeholder="general"
                         required
                         className={cn(
-                            "px-2 py-1 rounded-md border text-base"
+                            "px-2.5 py-1.5 border border-muted border-opacity-60 bg-surface rounded-md",
+                            "placeholder:text-subtle",
                         )}
                     />
+
+                    <div className="flex flex-col items-start text-love">
+                        <Form.Message match="valueMissing">Please enter the name of the board</Form.Message>
+                        <Form.Message match={(value) => value.length > 20}>Board name must be less than 20 characters</Form.Message>
+                        <Form.Message match={(value) => value.match(/^[a-z0-9-]+$/) === null}>Board name must only be lowercase letters, numbers, and dashes</Form.Message>
+                    </div>
                 </Form.Field>
 
-                <Form.Field name="boardDescription" className="w-full flex flex-col">
-                    <div className="flex flex-row justify-between gap-16">
-                        <Form.Label className="text-lg">Board description <span className="text-rose">*</span></Form.Label>
-
-                        <div className="flex flex-col items-center">
-                            <Form.Message className="break-words whitespace-normal" match="valueMissing">Please enter the board&apos; description</Form.Message>
-                        </div>
-                    </div>
+                <Form.Field name="boardDescription" className="w-full flex flex-col gap-1">
+                    <Form.Label className="text-lg">Board description <span className="text-love">*</span></Form.Label>
 
                     <Form.Control
                         type="text"
@@ -83,37 +77,50 @@ export function CreateBoardForm({ className }: CreateBoardFormProps) {
                         required
                         asChild
                     >
-                        <textarea className="px-2 py-1 min-h-[5em] border border-gray-400 text-base resize-y" />
+                        <textarea className={cn(
+                            "px-2.5 py-1.5 min-h-[6em] border border-muted border-opacity-60 bg-surface rounded-md resize-y",
+                            "placeholder:text-subtle",
+                        )}/>
                     </Form.Control>
+
+                    <div className="flex flex-col text-love">
+                        <Form.Message match="valueMissing">Please enter the board&apos;s description</Form.Message>
+                    </div>
                 </Form.Field>
 
-                <Form.Field name="boardPicture" className="w-full">
-                    <div className="w-full flex flex-row justify-between gap-16">
-                        <Form.Label className="text-lg">Board picture <span className="text-rose">*</span></Form.Label>
-
-                        <Form.Message match="valueMissing">Please add a picture for the board</Form.Message>
-                    </div>
+                <Form.Field name="boardPicture" className="w-full flex flex-col gap-1">
+                    <Form.Label className="text-lg">Board picture <span className="text-love">*</span></Form.Label>
 
                     <Form.Control ref={boardPictureRef} type="file" accept="image/png, image/jpeg" required />
+
+                    <div className="flex flex-col text-love">
+                        <Form.Message match="valueMissing">Please add a picture for the board</Form.Message>
+                    </div>
                 </Form.Field>
             </div>
 
-            <div className="flex flex-col items-center gap-2">
+            <div className="flex flex-col items-center gap-3">
                 {formState !== CreateBoardFormState.LOADING && (
                     <>
                         {error ? (
-                            <p>{error}</p>
+                            <p className="text-gold">{error}</p>
                         ) : error === null && (
-                            <p>Board created successfully!</p>
+                            <p className="text-gold">Board created successfully!</p>
                         )}
                     </>
                 )}
 
-                <Form.Submit disabled={formState === CreateBoardFormState.LOADING} className="px-4 py-1.5 bg-slate-500 text-black border border-slate-600 rounded-md">
+                <Form.Submit
+                    disabled={formState === CreateBoardFormState.LOADING}
+                    className={cn(
+                        "px-4 py-2 bg-rose text-rp-base font rounded-md transition-[filter]",
+                        "hover:brightness-105"
+                    )}
+                >
                     {formState === CreateBoardFormState.LOADING ? (
-                        <Loader2 className="animate-spin" />
+                        <Loader2 className="animate-spin stroke-rp-base" />
                     ) : (
-                        <span>Create board</span>
+                        <span className="text-lg">Create board</span>
                     )}
                 </Form.Submit>
             </div>

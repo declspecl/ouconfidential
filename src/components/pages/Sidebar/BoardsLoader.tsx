@@ -1,67 +1,67 @@
 import { cookies } from "next/headers";
 import { BoardPicture } from "./BoardPicture";
 import { AlertCircleIcon } from "lucide-react";
+import { prettifyBoardName } from "@/lib/utils";
+import { Tooltip } from "@/components/ui/Tooltip";
 import { Database } from "@/backend/database.types";
-import { AuthError, PostgrestError } from "@supabase/supabase-js";
 import { createServerComponentClient } from "@supabase/auth-helpers-nextjs";
+
+function ErroredBoard() {
+    return (
+        <li>
+            <AlertCircleIcon className="w-full h-full stroke-text rounded-full" />
+        </li>
+    );
+}
 
 export async function BoardsLoader() {
     const supabase = createServerComponentClient<Database>({ cookies: () => cookies() });
     
     const { data: { user: user }, error: authError } = await supabase.auth.getUser();
 
-    let errorEncountered: AuthError | PostgrestError | null = null;
-    let boards: Database["public"]["Tables"]["boards"]["Row"][] = [];
+    if (authError) {
+        console.error(authError);
 
-    if (user) {
-        const { data: joinedBoards, error: boardsUsersError } = await supabase.from("boards_users")
-            .select("*")
-            .eq("user_uuid", user.id);
-
-        if (joinedBoards) {
-            const { data: matchingBoards, error: boardsError } = await supabase.from("boards")
-                .select("*")
-                .in("board_id", joinedBoards.map(board => board.board_id));
-
-            if (boardsError) {
-                console.error(boardsError);
-
-                errorEncountered = boardsError;
-            }
-            else {
-                boards = matchingBoards;
-            }
-        }
-        else {
-            console.error(boardsUsersError);
-
-            errorEncountered = boardsUsersError;
-        }
+        return <ErroredBoard />;
     }
-    else {
-        console.log(authError);
+    else if (!user)
+        return <ErroredBoard />;
 
-        errorEncountered = authError;
+    const { data: joinedBoards, error: getJoinedBoardsError } = await supabase.from("boards_users")
+        .select("*")
+        .eq("user_uuid", user.id);
+
+    if (getJoinedBoardsError) {
+        console.error(getJoinedBoardsError);
+
+        return <ErroredBoard />;
+    }
+
+    const { data: matchingBoards, error: getMatchingBoardsError } = await supabase.from("boards")
+        .select("*")
+        .in("board_id", joinedBoards.map(board => board.board_id));
+
+    if (getMatchingBoardsError) {
+        console.error(getMatchingBoardsError);
+
+        return <ErroredBoard />;
     }
 
     return (
         <>
-            {errorEncountered ? (
-                <li className="p-2 bg-background-200 rounded-full">
-                    <AlertCircleIcon className="aspect-square rounded-full" />
-                </li>
-            ) : (
-                <>
-                    {boards.map(board => (
-                        <BoardPicture
-                            key={board.name}
-                            name={board.name}
-                            src={board.picture_url}
-                            target={board.name}
-                        />
-                    ))}
-                </>
-            )}
+            {matchingBoards.map(board => (
+                <Tooltip
+                    content={prettifyBoardName(board.name)}
+                    key={board.name}
+                    side="right"
+                >
+                    <BoardPicture
+                        name={board.name}
+                        src={board.picture_url}
+                        target={board.name}
+                    />
+                </Tooltip>
+            ))}
         </>
     );
 }
