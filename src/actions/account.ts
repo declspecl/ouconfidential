@@ -16,7 +16,7 @@ export async function signIn(email: string, password: string): Promise<string | 
 
     if (error)
         return `Failed to sign in: ${error.message}`;
-
+    
     redirect("/");
 }
 

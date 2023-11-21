@@ -3,7 +3,9 @@
 import { signUp } from "@/actions/account";
 import { cn } from "@/lib/utils";
 import * as Form from "@radix-ui/react-form";
-import { Loader2 } from "lucide-react";
+import { ExternalLinkIcon, Loader2 } from "lucide-react";
+import Link from "next/link";
+import { useRouter } from "next/navigation";
 import { useEffect, useOptimistic, useRef, useState } from "react";
 
 enum SignUpFormState {
@@ -20,6 +22,8 @@ export default function SignUp() {
     const [error, setError] = useState<string | null | undefined>(undefined);
 
     const [formState, setFormState] = useOptimistic<SignUpFormState>(SignUpFormState.IDLE);
+
+    const router = useRouter();
 
     async function signUpClientAction(formData: FormData) {
         if (formState !== SignUpFormState.LOADING) {
@@ -40,9 +44,14 @@ export default function SignUp() {
             if (signUpError)
                 setError(signUpError);
             else {
+                setError(null);
+
                 emailRef.current.value = "";
                 grizzIDRef.current.value = "";
                 passwordRef.current.value = "";
+
+                router.push("/");
+                router.refresh();
             }
 
             setFormState(SignUpFormState.DONE);
@@ -50,8 +59,20 @@ export default function SignUp() {
     }
 
     return (
-        <div className="flex flex-col gap-12">
-            <h1 className="text-rose">Sign up</h1>
+        <div className="flex flex-col gap-10">
+            <div>
+                <h1 className="text-gold">Sign up</h1>
+
+                <h4 className="inline">
+                    Already have an account?&nbsp;
+
+                    <Link href="/login" className="inline-flex flex-row items-center gap-1 text-rose underline">
+                        Log in here!
+
+                        <ExternalLinkIcon />
+                    </Link>
+                </h4>
+            </div>
 
             <Form.Root className="w-full flex flex-col gap-2 text-text text-base" action={signUpClientAction}>
                 <div className="w-full flex flex-col items-start gap-3">
@@ -129,7 +150,7 @@ export default function SignUp() {
                     <Form.Submit
                         disabled={formState === SignUpFormState.LOADING}
                         className={cn(
-                            "px-4 py-2 bg-rose text-rp-base font rounded-md transition-[filter]",
+                            "px-4 py-1.5 bg-rose text-rp-base font rounded-md transition-[filter]",
                             "hover:brightness-105"
                         )}
                     >

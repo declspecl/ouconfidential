@@ -2,7 +2,7 @@ import { CreateBoardForm } from "@/components/pages/CreateBoardForm";
 
 export default function CreateBoard() {
     return (
-        <div className="flex flex-col gap-12">
+        <div className="flex flex-col gap-10">
             <div>
                 <h1 className="text-gold">Create Board</h1>
 

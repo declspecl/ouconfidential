@@ -1,11 +1,12 @@
 "use client";
 
 import { cn } from "@/lib/utils";
-import * as Form from "@radix-ui/react-form";
-import { useOptimistic, useRef, useState } from "react";
-import { Loader2 } from "lucide-react";
+import { ExternalLinkIcon, Loader2 } from "lucide-react";
 import { redirect, useRouter } from "next/navigation";
 import { signIn } from "@/actions/account";
+import * as Form from "@radix-ui/react-form";
+import { useOptimistic, useRef, useState } from "react";
+import Link from "next/link";
 
 enum LoginFormState {
     IDLE,
@@ -47,14 +48,27 @@ export default function Login() {
 
             emailRef.current.value = "";
             passwordRef.current.value = "";
-        }
 
-        redirect("/");
+            router.push("/");
+            router.refresh();
+        }
     }
 
     return (
-        <div className="flex flex-col gap-12">
-            <h1 className="text-rose">Log in</h1>
+        <div className="flex flex-col gap-10">
+            <div>
+                <h1 className="text-gold">Log in</h1>
+
+                <h4>
+                    Don&apos;t have an account?&nbsp;
+                    
+                    <Link href="/signup" className="inline-flex flex-row items-center gap-1 text-rose underline">
+                        Sign up here!
+                        
+                        <ExternalLinkIcon />
+                    </Link>
+                </h4>
+            </div>
 
             <Form.Root className="w-full flex flex-col gap-2 text-text text-base" action={loginClientAction}>
                 <div className="w-full flex flex-col items-start gap-3">
@@ -112,7 +126,7 @@ export default function Login() {
                     <Form.Submit
                         disabled={formState === LoginFormState.LOADING}
                         className={cn(
-                            "px-4 py-2 bg-rose text-rp-base font rounded-md transition-[filter]",
+                            "px-4 py-1.5 bg-rose text-rp-base font rounded-md transition-[filter]",
                             "hover:brightness-105"
                         )}
                     >

@@ -6,7 +6,8 @@ import { PostListing } from "@/components/pages/Board/PostListing";
 import { BoardInfoHeader } from "@/components/layout/BoardInfoHeader";
 import { createServerComponentClient } from "@supabase/auth-helpers-nextjs";
 import Link from "next/link";
-import { SignOutButton } from "@/components/ui/SignOutButton";
+import { ExternalLinkIcon } from "lucide-react";
+import { Separator } from "@/components/ui/Separator";
 
 export default async function Home() {
     const supabase = createServerComponentClient<Database>({ cookies: () => cookies() });
@@ -37,7 +38,7 @@ export default async function Home() {
 
     if (getJoinedBoardsError) {
         console.error(getJoinedBoardsError);
-        return <p>error</p>
+        return <p>{getJoinedBoardsError.message}</p>
     }
 
     const { data: joinedBoardsAndPosts, error: getJoinedBoardsAndPostsError } = await supabase.from("boards")
@@ -49,7 +50,7 @@ export default async function Home() {
 
     if (getJoinedBoardsAndPostsError) {
         console.error(getJoinedBoardsAndPostsError);
-        return <p></p>
+        return <p>{getJoinedBoardsAndPostsError.message}</p>
     }
 
     return (
@@ -57,23 +58,50 @@ export default async function Home() {
             <div className={cn("w-full flex flex-col", poppins.className)}>
                 <h1 className="leading-normal text-gold">Welcome back!</h1>
 
-                <h3 className="leading-normal text-rose">While you were gone...</h3>
+                {joinedBoards.length === 0 ? (
+                    <h4>You haven&apos;t joined any boards yet! Find some&nbsp;
+
+                        <Link href="/ou" className="inline-flex flex-row items-center gap-1 text-rose underline">
+                            here!
+
+                            <ExternalLinkIcon />
+                        </Link>
+                    </h4>
+                ) : (
+                    <h3 className="leading-normal text-rose">While you were gone...</h3>
+                )}
             </div>
 
             <div className="w-full flex flex-col gap-12">
-                {joinedBoardsAndPosts?.map((board) => (
-                    <div key={board.name} className="w-full flex flex-col gap-6">
+                {joinedBoardsAndPosts?.map((board, index) => (
+                    <div key={`digest-${board.name}`} className="p-4 w-full flex flex-col gap-6 border border-muted border-opacity-75 rounded-md">
                         <BoardInfoHeader
                             name={board.name}
                             description={board.description}
                             pictureURL={board.picture_url}
                             createdAt={new Date(board.created_at)}
                         />
+                        
+                        <Separator orientation="horizontal" className="mx-auto w-full h-[2px] bg-muted rounded-full" />
 
-                        <ul className="w-full flex flex-col gap-4">
-                            {board.posts.map((post) => (
-                                <PostListing post={post} key={post.title} />
-                            ))}
+                        <ul className="w-full flex flex-col gap-8">
+                            {board.posts.length === 0 ? (
+                                <h5 className="inline">
+                                    There aren&apos;t any posts here! Why don&apos;t you&nbsp;
+
+                                    <Link href={`/ou/${board.name}/create`} className="inline-flex flex-row gap-1 items-center text-rose underline">
+                                        make one?
+
+                                        <ExternalLinkIcon />
+                                    </Link>
+                                </h5>
+                            ) : (
+                                <>
+                                    {board.posts.map((post) => (
+                                        <PostListing post={post} boardName={board.name} key={`${post.creator_uuid}-${post.title}-${post.created_at}`} />
+                                    ))}
+                                </>
+                            )}
                         </ul>
                     </div>
                 ))}

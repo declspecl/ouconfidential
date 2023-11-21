@@ -43,7 +43,7 @@ export function CreatePostForm({ boardName, className }: CreatePostFormProps) {
     }
 
 	return (
-        <Form.Root className={cn("min-w-[42rem] flex flex-col gap-2 text-text", className)} action={createPostClientAction}>
+        <Form.Root className={cn("flex flex-col gap-2 text-text", className)} action={createPostClientAction}>
             <div className="w-full flex flex-col items-start gap-2">
                 <Form.Field name="postTitle" className="w-full flex flex-col gap-2">
                     <Form.Label className="text-lg">Post title <span className="text-love">*</span></Form.Label>

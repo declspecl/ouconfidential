@@ -18,7 +18,7 @@ interface CreateBoardFormProps {
 
 export function CreateBoardForm({ className }: CreateBoardFormProps) {
     const boardNameRef = useRef<HTMLInputElement>(null!);
-    const boardDescriptionRef = useRef<HTMLInputElement>(null!);
+    const boardDescriptionRef = useRef<HTMLTextAreaElement>(null!);
     const boardPictureRef = useRef<HTMLInputElement>(null!);
 
     const [formState, setFormState] = useOptimistic<CreateBoardFormState>(CreateBoardFormState.IDLE);
@@ -72,12 +72,11 @@ export function CreateBoardForm({ className }: CreateBoardFormProps) {
 
                     <Form.Control
                         type="text"
-                        ref={boardDescriptionRef}
                         placeholder="What is your board about? What will you be talking about here?"
                         required
                         asChild
                     >
-                        <textarea className={cn(
+                        <textarea ref={boardDescriptionRef} className={cn(
                             "px-2.5 py-1.5 min-h-[6em] border border-muted border-opacity-60 bg-surface rounded-md resize-y",
                             "placeholder:text-subtle",
                         )}/>
@@ -113,7 +112,7 @@ export function CreateBoardForm({ className }: CreateBoardFormProps) {
                 <Form.Submit
                     disabled={formState === CreateBoardFormState.LOADING}
                     className={cn(
-                        "px-4 py-2 bg-rose text-rp-base font rounded-md transition-[filter]",
+                        "px-4 py-1.5 bg-rose text-rp-base font rounded-md transition-[filter]",
                         "hover:brightness-105"
                     )}
                 >

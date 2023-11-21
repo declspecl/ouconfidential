@@ -3,6 +3,7 @@
 import { cookies } from "next/headers";
 import { redirect } from "next/navigation";
 import { Database } from "@/backend/database.types";
+import { UserBoardRelationship } from "@/lib/utils";
 import { createServerActionClient } from "@supabase/auth-helpers-nextjs";
 
 interface CreateBoardResponse {
@@ -141,6 +142,89 @@ export async function createBoard(formData: FormData): Promise<CreateBoardRespon
 
         return { error: creatorJoinNewBoardError.message };
     }
+
+    redirect(`/ou/${boardName}`);
+}
+
+export async function getUserBoardRelationship(boardName: string): Promise<UserBoardRelationship> {
+    const supabase = createServerActionClient<Database>({ cookies: () => cookies() });
+
+    const { data: { user: user }, error } = await supabase.auth.getUser();
+
+    if (error || !user)
+        return UserBoardRelationship.NONE;
+
+    const { data: boardRows, error: boardRowsError } = await supabase.from("boards")
+        .select("*")
+        .eq("name", boardName);
+
+    console.log(boardRows);
+
+    if (boardRowsError || boardRows.length !== 1)
+        return UserBoardRelationship.NONE;
+
+    const { data: createdBoardRows, error: getCreatedBoardRowsError } = await supabase.from("boards")
+        .select("*")
+        .eq("creator_uuid", user.id)
+        .eq("board_id", boardRows[0].board_id);
+
+    if (getCreatedBoardRowsError)
+        return UserBoardRelationship.NONE;
+
+    if (createdBoardRows.length === 1)
+        return UserBoardRelationship.CREATOR;
+
+    const { data: boardUserRows, error: boardUserRowsError } = await supabase.from("boards_users")
+        .select("*")
+        .eq("user_uuid", user.id)
+        .eq("board_id", boardRows[0].board_id);
+
+    if (boardUserRowsError || boardUserRows.length === 0)
+        return UserBoardRelationship.NONE;
+
+    return UserBoardRelationship.MEMBER;
+}
+
+export async function joinBoard(boardName: string): Promise<string | null> {
+    const supabase = createServerActionClient<Database>({ cookies: () => cookies() });
+
+    const { data: { user: user }, error } = await supabase.auth.getUser();
+
+    if (error)
+        return "An error occured when trying to retrieve the current user.";
+
+    if (!user)
+        return "You must be logged in to join a board.";
+
+    const { data: boardRows, error: boardRowsError } = await supabase.from("boards")
+        .select("*")
+        .eq("name", boardName);
+
+    if (boardRowsError)
+        return boardRowsError.message;
+
+    if (boardRows.length === 0)
+        return "The board you are trying to join does not exist.";
+
+    const { data: boardUserRows, error: boardUserRowsError } = await supabase.from("boards_users")
+        .select("*")
+        .eq("board_id", boardRows[0].board_id)
+        .eq("user_uuid", user.id);
+
+    if (boardUserRowsError)
+        return boardUserRowsError.message;
+
+    if (boardUserRows.length > 0)
+        return "You are already a member of this board.";
+
+    const { error: boardUserInsertError } = await supabase.from("boards_users")
+        .insert({
+            board_id: boardRows[0].board_id,
+            user_uuid: user.id
+        });
+
+    if (boardUserInsertError)
+        return boardUserInsertError.message;
 
     redirect(`/ou/${boardName}`);
 }

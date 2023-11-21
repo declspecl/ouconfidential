@@ -6,7 +6,7 @@ import { GlobeIcon, HomeIcon, UserCircle2Icon } from "lucide-react";
 
 function ManualSidebarEntry({ children }: { children: React.ReactNode }) {
     return (
-        <li className="p-3 w-full aspect-square bg-overlay rounded-full">
+        <li className="w-full aspect-square bg-overlay rounded-full">
             {children}
         </li>
     );
@@ -19,7 +19,7 @@ export function Sidebar() {
                 <Tooltip content="Account" side="right">
                     <ManualSidebarEntry>
                         <Link href="/account">
-                            <UserCircle2Icon className="w-full h-full stroke-text" />
+                            <UserCircle2Icon className="p-3 w-full h-full stroke-text" />
                         </Link>
                     </ManualSidebarEntry>
                 </Tooltip>
@@ -27,7 +27,7 @@ export function Sidebar() {
                 <Tooltip content="Home" side="right">
                     <ManualSidebarEntry>
                         <Link href="/">
-                            <HomeIcon className="w-full h-full stroke-text" />
+                            <HomeIcon className="p-3 w-full h-full stroke-text" />
                         </Link>
                     </ManualSidebarEntry>
                 </Tooltip>
@@ -35,7 +35,7 @@ export function Sidebar() {
                 <Tooltip content="Boards" side="right">
                     <ManualSidebarEntry>
                         <Link href="/ou">
-                            <GlobeIcon className="w-full h-full stroke-text" />
+                            <GlobeIcon className="p-3 w-full h-full stroke-text" />
                         </Link>
                     </ManualSidebarEntry>
                 </Tooltip>

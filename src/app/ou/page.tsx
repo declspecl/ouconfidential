@@ -21,26 +21,33 @@ export default async function OUBoards() {
             <div>
                 <h1 className="text-gold">All Boards</h1>
 
-                <Link
-                    href="/ou/create"
-                    className={cn(
-                        "text-rose underline transition-[filter]",
-                        "hover:brightness-105"
-                    )}
-                >
-                    <h3 className="flex flex-row items-center gap-1">
-                        Create a Board
+                <h3>Found a board you like? Join it!</h3>
+
+                <h4 className="inline">
+                    Want to create a board?&nbsp;
+
+                    <Link
+                        href="/ou/create"
+                        className={cn(
+                            "inline-flex flex-row items-center gap-1 text-rose underline transition-[filter]",
+                            "hover:brightness-110"
+                        )}
+                    >
+                        Do it here!
 
                         <ExternalLinkIcon />
-                    </h3>
-                </Link>
+                    </Link>
+                </h4>
             </div>
 
-            <div className="w-full grid grid-cols-2 gap-4">
+            <div className={cn(
+                "w-full grid grid-cols-1 gap-4",
+                "lg:grid-cols-2"
+            )}>
                 {joinedBoards.map((board) => (
                     <div
                         key={board.name}
-                        className="p-4 w-full border border-muted border-opacity-80 rounded-xl"
+                        className="p-4 w-full border border-muted border-opacity-75 rounded-xl transition-[border] hover:border-opacity-100"
                     >
                         <BoardInfoHeader
                             name={board.name}

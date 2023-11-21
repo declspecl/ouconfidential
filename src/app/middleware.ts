@@ -1,39 +1,28 @@
-import { createMiddlewareClient } from "@supabase/auth-helpers-nextjs"
 import { NextResponse } from "next/server"
-
 import type { NextRequest } from "next/server"
-import { Database } from "./backend/database.types";
+import { Database } from "@/backend/database.types";
+import { createMiddlewareClient } from "@supabase/auth-helpers-nextjs"
+
 
 export async function middleware(request: NextRequest) {
     const response = NextResponse.next();
     const supabase = createMiddlewareClient<Database>({ req: request, res: response });
-    const { data: { session: session }, error } = await supabase.auth.getSession();
+    const { data: session, error } = await supabase.auth.getSession();
 
     if (error) {
         console.error(error);
     }
 
-    if (!session)
-        console.log("no session");
-    else {
-        console.log("session");
-
-        if (!session.user)
-            console.log("no user");
-        else
-            console.log("user");
-    }
-
-
-    if (session) {
-        if (session.user) {
-            if (request.nextUrl.pathname === "/login") {
-                return NextResponse.redirect(new URL("/", request.url));
-            }
+    // logged in
+    if (session && session.session && session.session.user) {
+        if (request.nextUrl.pathname === "/login") {
+            return NextResponse.redirect(new URL("/", request.url));
         }
     }
+    else {
+        console.log("no session");
+        console.log(request.nextUrl.pathname);
 
-    if (!session || !session.user) {
         if (request.nextUrl.pathname.endsWith("/create") || request.nextUrl.pathname === "/" || request.nextUrl.pathname === "/account")
             return NextResponse.redirect(new URL("/login", request.url));
     }

@@ -16,7 +16,8 @@ export function SidebarAndMainContentContainer({ className, children }: SidebarA
 
             <div className="w-full h-full grow flex flex-row justify-center overflow-y-auto">
                 <div className={cn(
-                    "mx-auto my-5 p-9 w-11/12 bg-surface border border-muted border-opacity-25 rounded-xl overflow-y-auto",
+                    "mx-auto my-3 p-4 w-11/12 bg-surface border border-muted border-opacity-25 rounded-xl overflow-y-auto",
+                    "ly:my-5 lg:p-8",
                     "xl:w-8/12"
                 )}>
                     {children}

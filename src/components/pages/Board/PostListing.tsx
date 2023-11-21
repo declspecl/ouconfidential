@@ -3,24 +3,28 @@
 import { poppins } from "@/Fonts";
 import type { Database } from "@/backend/database.types";
 import { cn } from "@/lib/utils";
+import Link from "next/link";
 
 interface PostListingProps {
-    post: Database["public"]["Tables"]["posts"]["Row"]
+    post: Database["public"]["Tables"]["posts"]["Row"],
+    boardName: string
 }
 
-export function PostListing({ post }: PostListingProps) {
+export function PostListing({ post, boardName }: PostListingProps) {
     return (
-        <button onClick={() => console.log(post.post_id)}>
-            <li className="p-3 border border-muted rounded-lg">
-                <div className="flex flex-col items-start gap-2">
-                    <div className="flex flex-col items-start gap-2">
-                        <h3 className={cn("leading-tight text-pine", poppins.className)}>{post.title}</h3>
+        <button className="transition-[filter] hover:brightness-110" onClick={() => console.log(post.post_id)}>
+            <li>
+                <Link href={`/ou/${boardName}/${post.post_id}`}>
+                    <div className="w-full flex flex-col items-start gap-2">
+                        <div className="flex flex-col items-start gap-2">
+                            <h3 className={cn("text-left leading-tight text-pine", poppins.className)}>{post.title}</h3>
 
-                        <p className="text-text text-opacity-75">Created: {new Date(post.created_at).toLocaleString()}</p>
+                            <small className="text-left text-text text-opacity-75 break-all">Created: {new Date(post.created_at).toLocaleString()}</small>
+                        </div>
+
+                        <p className="text-left break-words">{post.description}</p>
                     </div>
-
-                    <p className="rounded-md text-lg">{post.description}</p>
-                </div>
+                </Link>
             </li>
         </button>
     )

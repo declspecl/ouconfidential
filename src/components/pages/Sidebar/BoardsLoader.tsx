@@ -52,7 +52,7 @@ export async function BoardsLoader() {
             {matchingBoards.map(board => (
                 <Tooltip
                     content={prettifyBoardName(board.name)}
-                    key={board.name}
+                    key={`sidebar-${board.name}`}
                     side="right"
                 >
                     <BoardPicture
