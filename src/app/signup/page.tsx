@@ -77,7 +77,7 @@ export default function SignUp() {
             <Form.Root className="w-full flex flex-col gap-2 text-text text-base" action={signUpClientAction}>
                 <div className="w-full flex flex-col items-start gap-3">
                     <Form.Field name="grizzID" className="w-full flex flex-col gap-1">
-                        <Form.Label className="text-lg">Grizz ID <span className="text-love">*</span></Form.Label>
+                        <Form.Label className="text-lg">Grizzly ID <span className="text-love">*</span></Form.Label>
 
                         <Form.Control
                             type="text"
@@ -91,8 +91,8 @@ export default function SignUp() {
                         />
 
                         <div className="flex flex-col items-start text-love">
-                            <Form.Message match="valueMissing">Please enter your grizz ID</Form.Message>
-                            <Form.Message match={(value) => value.match(/^G-[0-9]{8}$/) === null}>Please properly enter your grizz ID</Form.Message>
+                            <Form.Message match="valueMissing">Please enter your grizzly ID</Form.Message>
+                            <Form.Message match={(value) => value.match(/^G-[0-9]{8}$/) === null}>Please properly enter your grizzly ID</Form.Message>
                         </div>
                     </Form.Field>
 
