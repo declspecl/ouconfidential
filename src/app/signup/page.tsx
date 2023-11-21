@@ -1,12 +1,12 @@
 "use client";
 
-import { signUp } from "@/actions/account";
-import { cn } from "@/lib/utils";
-import * as Form from "@radix-ui/react-form";
-import { ExternalLinkIcon, Loader2 } from "lucide-react";
 import Link from "next/link";
+import { cn } from "@/lib/utils";
+import { signUp } from "@/actions/account";
 import { useRouter } from "next/navigation";
-import { useEffect, useOptimistic, useRef, useState } from "react";
+import * as Form from "@radix-ui/react-form";
+import { useOptimistic, useRef, useState } from "react";
+import { ExternalLinkIcon, Loader2 } from "lucide-react";
 
 enum SignUpFormState {
     IDLE,
@@ -82,7 +82,7 @@ export default function SignUp() {
                         <Form.Control
                             type="text"
                             ref={grizzIDRef}
-                            placeholder="G-12345678"
+                            placeholder="G12345678"
                             required
                             className={cn(
                                 "px-2.5 py-1.5 border border-muted border-opacity-60 bg-surface rounded-md",
