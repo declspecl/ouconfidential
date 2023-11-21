@@ -77,6 +77,7 @@ export default function Login() {
 
                         <Form.Control
                             type="email"
+                            autoComplete="email"
                             ref={emailRef}
                             placeholder="fullname@oakland.edu"
                             required
@@ -97,6 +98,7 @@ export default function Login() {
 
                         <Form.Control
                             type="password"
+                            autoComplete="current-password"
                             ref={passwordRef}
                             placeholder="••••••••••••"
                             required

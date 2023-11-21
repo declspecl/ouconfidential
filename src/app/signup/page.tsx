@@ -101,6 +101,7 @@ export default function SignUp() {
 
                         <Form.Control
                             type="email"
+                            autoComplete="email"
                             ref={emailRef}
                             placeholder="fullname@oakland.edu"
                             required
@@ -121,6 +122,7 @@ export default function SignUp() {
 
                         <Form.Control
                             type="password"
+                            autoComplete="new-password"
                             ref={passwordRef}
                             placeholder="••••••••••••"
                             required
