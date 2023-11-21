@@ -29,11 +29,11 @@ export function CreateBoardForm({ className }: CreateBoardFormProps) {
         if (formState !== CreateBoardFormState.LOADING) {
             setFormState(CreateBoardFormState.LOADING);
 
-            const { error } = await createBoard(formData);
+            const { error: createBoardError } = await createBoard(formData);
 
-            setError(error);
+            setError(createBoardError);
 
-            if (!error) {
+            if (!createBoardError) {
                 boardNameRef.current.value = "";
                 boardDescriptionRef.current.value = "";
                 boardPictureRef.current.value = "";

@@ -1,7 +1,7 @@
 "use server";
 
 import { cookies } from "next/headers";
-import { revalidatePath } from "next/cache";
+import { redirect } from "next/navigation";
 import { Database } from "@/backend/database.types";
 import { createServerActionClient } from "@supabase/auth-helpers-nextjs";
 
@@ -142,7 +142,5 @@ export async function createBoard(formData: FormData): Promise<CreateBoardRespon
         return { error: creatorJoinNewBoardError.message };
     }
 
-    revalidatePath("/");
-
-    return { error: null };
+    redirect(`/ou/${boardName}`);
 }

@@ -22,10 +22,10 @@ export async function BoardsLoader() {
     if (authError) {
         console.error(authError);
 
-        return <ErroredBoard />;
+        return <></>;
     }
     else if (!user)
-        return <ErroredBoard />;
+        return <></>;
 
     const { data: joinedBoards, error: getJoinedBoardsError } = await supabase.from("boards_users")
         .select("*")

@@ -1,12 +1,12 @@
 import Link from "next/link";
-import { GlobeIcon, HomeIcon, SettingsIcon } from "lucide-react";
+import { Tooltip } from "../ui/Tooltip";
 import { BoardsLoader } from "./Sidebar/BoardsLoader";
 import { Separator } from "@/components/ui/Separator";
-import { Tooltip } from "../ui/Tooltip";
+import { GlobeIcon, HomeIcon, UserCircle2Icon } from "lucide-react";
 
 function ManualSidebarEntry({ children }: { children: React.ReactNode }) {
     return (
-        <li className="p-2.5 w-full aspect-square bg-overlay rounded-full">
+        <li className="p-3 w-full aspect-square bg-overlay rounded-full">
             {children}
         </li>
     );
@@ -15,7 +15,15 @@ function ManualSidebarEntry({ children }: { children: React.ReactNode }) {
 export function Sidebar() {
     return (
         <div className="w-20 h-full scrollable-hidden bg-surface">
-            <ul className="p-2 w-full h-full flex flex-col gap-3 items-center">
+            <ul className="p-2.5 w-full h-full flex flex-col gap-3 items-center">
+                <Tooltip content="Account" side="right">
+                    <ManualSidebarEntry>
+                        <Link href="/account">
+                            <UserCircle2Icon className="w-full h-full stroke-text" />
+                        </Link>
+                    </ManualSidebarEntry>
+                </Tooltip>
+
                 <Tooltip content="Home" side="right">
                     <ManualSidebarEntry>
                         <Link href="/">

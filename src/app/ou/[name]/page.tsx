@@ -1,7 +1,7 @@
+import Link from "next/link";
 import { cookies } from "next/headers";
 import { Database } from "@/backend/database.types";
 import { BoardPosts } from "@/components/pages/Board/BoardPosts";
-import { CreatePostForm } from "@/components/pages/CreatePostForm";
 import { BoardInfoHeader } from "@/components/layout/BoardInfoHeader";
 import { createServerComponentClient } from "@supabase/auth-helpers-nextjs";
 
@@ -45,12 +45,16 @@ export default async function Board({ params }: BoardProps) {
                     </div>
 
                     <div className="pt-8 flex flex-col gap-4">
-                        <h2 className="text-4xl font-medium">Posts</h2>
+                        <div className="flex flex-col gap-2">
+                            <h2 className="text-gold font-medium">Posts</h2>
+
+                            <Link href={`/ou/${params.name}/create`} className="text-rose">
+                                <h4>Create a post</h4>
+                            </Link>
+                        </div>
 
                         <BoardPosts posts={posts} />
                     </div>
-
-                    <CreatePostForm boardName={name} />
                 </div>
             );
         }

@@ -4,6 +4,7 @@ import { cookies } from "next/headers";
 import { revalidatePath } from "next/cache";
 import { Database } from "@/backend/database.types";
 import { createServerActionClient } from "@supabase/auth-helpers-nextjs";
+import { redirect } from "next/navigation";
 
 interface CreatePostResponse {
     error: string | null
@@ -50,7 +51,5 @@ export async function createPost(formData: FormData): Promise<CreatePostResponse
     if (insertPostError)
         return { error: `Failed to insert post into database: ${insertPostError.message}` };
 
-    revalidatePath(`/ou/${boardName}`);
-
-    return { error: null };
+    redirect(`/ou/${boardName}`);
 }
