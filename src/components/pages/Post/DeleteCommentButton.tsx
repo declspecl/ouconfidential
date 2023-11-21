@@ -15,7 +15,7 @@ export function DeleteCommentButton({ commentID }: DeleteCommentButtonProps) {
 
     return (
         <button
-            className="w-fit h-fit p-2 bg-overlay rounded-lg transition-[filter] hover:brightness-[1.15]"
+            className="w-fit h-fit p-2 bg-overlay rounded-lg transition-[filter] hover:brightness-110"
             onClick={async () => {
                 const user = await supabase.auth.getUser();
 

@@ -12,7 +12,7 @@ interface BoardInfoHeaderProps {
 
 export function BoardInfoHeader({ name, description, pictureURL, createdAt }: BoardInfoHeaderProps) {
     return (
-        <Link href={`/ou/${name}`} className="transition-[filter,border] hover:brightness-[1.2]">
+        <Link href={`/ou/${name}`} className="transition-[filter,border] hover:brightness-110">
             <div className="w-fit flex flex-col gap-3">
                 <div className="w-fit flex flex-row gap-3">
                     <BoardPictureWithFallback name={name} pictureURL={pictureURL} sizesQuery="7rem" className="w-28 h-28 aspect-square" />
