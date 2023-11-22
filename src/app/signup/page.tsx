@@ -92,7 +92,7 @@ export default function SignUp() {
 
                         <div className="flex flex-col items-start text-love">
                             <Form.Message match="valueMissing">Please enter your grizzly ID</Form.Message>
-                            <Form.Message match={(value) => value.match(/^G-[0-9]{8}$/) === null}>Please properly enter your grizzly ID</Form.Message>
+                            <Form.Message match={(value) => value.match(/^G[0-9]{8}$/) === null}>Please properly enter your grizzly ID</Form.Message>
                         </div>
                     </Form.Field>
 
