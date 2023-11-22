@@ -17,7 +17,7 @@ interface PostProps {
 export default async function Post({ params }: PostProps) {
     const supabase = createServerComponentClient<Database>({ cookies: () => cookies() });
 
-    const user = supabase.auth.getUser();
+    const user = await supabase.auth.getUser();
 
     const { data: nameMatchBoard, error: getBoardError } = await supabase.from("boards")
         .select("*")
@@ -56,7 +56,9 @@ export default async function Post({ params }: PostProps) {
                 <PostListing post={post[0]} boardName={params.name} />
             </ul>
 
-            <DeletePostButton boardName={params.name} postID={post[0].post_id} />
+            {user && user.data && user.data.user && post[0].creator_uuid === user.data.user.id && (
+                <DeletePostButton boardName={params.name} postID={post[0].post_id} />
+            )}
 
             <Separator orientation="horizontal" className="w-full h-[2px] bg-muted rounded-full" />
 
