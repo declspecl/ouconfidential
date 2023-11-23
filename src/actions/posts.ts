@@ -22,12 +22,12 @@ export async function createPost(formData: FormData): Promise<CreatePostResponse
 
     // session is valid, getting form data
     const postTitle: string | null = formData.get("postTitle") as string | null;
-    const postDescription: string | null = formData.get("postDescription") as string | null;
+    const postDescription: string = (formData.get("postDescription") as string | null) || "";
     const boardName: string | null = formData.get("boardName") as string | null;
 
     // checking if form data is missing / invalid
-    if (!postTitle || !postDescription || !boardName)
-        return { error: "Either the post title, post description, or somehow, board name, were not submitted." };
+    if (!postTitle || !boardName)
+        return { error: "Either the post title, or somehow, board name, were not submitted." };
 
     // reading newly inserted board
     const { data: parentBoardRow, error: readParentBoardError } = await supabase.from("boards")

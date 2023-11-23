@@ -73,15 +73,11 @@ export function CreatePostForm({ boardName, className }: CreatePostFormProps) {
                         placeholder="What does your post talk about?"
                         asChild
                     >
-                        <textarea required ref={postDescriptionRef} className={cn(
+                        <textarea ref={postDescriptionRef} className={cn(
                             "px-2.5 py-1.5 min-h-[10em] border border-muted border-opacity-60 bg-surface rounded-md resize-y",
                             "placeholder:text-subtle",
                         )}/>
                     </Form.Control>
-
-                    <div className="flex flex-col text-love">
-                        <Form.Message match="valueMissing">Please enter the post&apos;s description</Form.Message>
-                    </div>
                 </Form.Field>
 
                 <input type="text" name="boardName" value={boardName} hidden readOnly aria-readonly />
