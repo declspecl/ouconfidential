@@ -19,7 +19,7 @@ interface CreatePostFormProps {
 
 export function CreatePostForm({ boardName, className }: CreatePostFormProps) {
     const postTitleRef = useRef<HTMLInputElement>(null!);
-    const postDescriptionRef = useRef<HTMLInputElement>(null!);
+    const postDescriptionRef = useRef<HTMLTextAreaElement>(null!);
     
     const [formState, setFormState] = useOptimistic<CreatePostFormState>(CreatePostFormState.IDLE);
 
@@ -70,14 +70,14 @@ export function CreatePostForm({ boardName, className }: CreatePostFormProps) {
 
                     <Form.Control
                         type="text"
-                        ref={postDescriptionRef}
                         placeholder="What does your post talk about?"
-                        required
-                        className={cn(
-                            "px-2.5 py-1.5 border border-muted border-opacity-60 bg-surface rounded-md",
+                        asChild
+                    >
+                        <textarea required ref={postDescriptionRef} className={cn(
+                            "px-2.5 py-1.5 min-h-[10em] border border-muted border-opacity-60 bg-surface rounded-md resize-y",
                             "placeholder:text-subtle",
-                        )}
-                    />
+                        )}/>
+                    </Form.Control>
 
                     <div className="flex flex-col text-love">
                         <Form.Message match="valueMissing">Please enter the post&apos;s description</Form.Message>

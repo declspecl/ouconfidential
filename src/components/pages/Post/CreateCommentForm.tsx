@@ -80,7 +80,7 @@ export function CreateCommentForm({ postID }: CreateCommentFormProps) {
                 <Form.Submit
                     disabled={formState === CreateCommentFormState.LOADING}
                     className={cn(
-                        "px-2.5 py-1.5 bg-rose text-rp-base rounded-md transition-[filter]",
+                        "px-4 py-1.5 bg-rose text-rp-base rounded-md transition-[filter]",
                         "hover:brightness-105"
                     )}
                 >
